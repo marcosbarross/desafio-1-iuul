@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ValidacaoClienteNamespace
+namespace Odonto
 {
     public static class Extensions
     {

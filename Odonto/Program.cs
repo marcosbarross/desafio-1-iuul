@@ -10,10 +10,7 @@ namespace Odonto
     {
         static void Main(string[] args)
         {
-
-            Paciente marcos = new Paciente(13634164484, "Marcos", "19/07/2001");
-            Console.WriteLine($"{marcos.CPF} {marcos.Nome} {marcos.Nascimento}");
-
+            Controlador.Inicia();
         }
     }
 }
