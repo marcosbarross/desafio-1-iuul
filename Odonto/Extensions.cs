@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,5 +48,25 @@ namespace Odonto
                 return dv1 == cpf % 100 / 10 && dv2 == cpf % 10;
             }
         }
+
+
+        public static bool NaoEhEscolhaValida(this string escolha, Menu menu)
+        {
+            switch (menu)
+            {
+                case Menu.Principal:
+                    return !EscolhaUmDoisTres(escolha);
+                case Menu.Cadastra:
+                    return !(EscolhaUmDoisTres(escolha) || escolha == "4" || escolha == "5");
+                case Menu.Agenda:
+                    return !(EscolhaUmDoisTres(escolha) || escolha == "4");
+                default: return false;
+            }
+        }
+        public static bool EscolhaUmDoisTres(string escolha)
+        {
+            return escolha == "1" || escolha == "2" || escolha == "3";
+        }
+
     }
 }
