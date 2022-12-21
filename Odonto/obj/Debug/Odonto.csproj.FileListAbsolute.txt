@@ -1,0 +1,8 @@
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.AssemblyReference.cache
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.SuggestedBindingRedirects.cache
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.CoreCompileInputs.cache
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\bin\Debug\Odonto.exe.config
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\bin\Debug\Odonto.exe
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\bin\Debug\Odonto.pdb
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\obj\Debug\Odonto.exe
+C:\Users\marco\Desktop\Residencia\desafio-1-iuul\Odonto\obj\Debug\Odonto.pdb
