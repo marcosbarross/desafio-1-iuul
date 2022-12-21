@@ -10,7 +10,9 @@ namespace Odonto
     {
         static void Main(string[] args)
         {
-            Controlador.Inicia();
+            Paciente p1 = new Paciente(62813265047, "Marcos", "17/07/2001");
+            
+            // Controlador.Inicia();
         }
     }
 }

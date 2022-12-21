@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,78 +13,78 @@ namespace Odonto
 {
     public class Paciente
     {
-
-        public Paciente(long CPF, String Nome, String Nascimento) 
-        
+        public Paciente(long _cpf, String _nome, String _nascimento) 
         {
-            Console.WriteLine("Paciente cadastrado!");
-        }
-        long cpf;
-        public long CPF
-        {
-            
-            get { return cpf; }
-
-            set
+            try
             {
-                if (IsValidCPF(value))
+                if (IsValidCPF(_cpf))
                 {
-                    cpf = value;
+                    CPF = _cpf;
                 }
-
-                else { throw new InvalidOperationException("CPF é inválido"); }
+                else { throw new InvalidOperationException(); }
             }
 
-
-        }
-
-        string nome;
-        public string Nome
-        {
-
-            get { return nome; }
-
-            set
+            catch (InvalidOperationException)
             {
-                try
+                Console.WriteLine("CPF INVÁLIDO!");
+            }
+            try
+            {
+                if (_nome.Length < 5)
                 {
-                    if (value.Length < 5)
-                    {
-                        throw new FormatException();
-                    }
-
-                    else
-                    {
-                        nome = value;
-                    }
+                    throw new FormatException();
                 }
-                catch (FormatException)
+
+                else
                 {
-                    Console.WriteLine("Formato de nome não aceito! É preciso ter mais de 5 caracteres");
+                    Nome = _nome;
                 }
             }
-        }
-
-        string nascimento;
-        public String Nascimento
-        {
-            get { return nascimento; }
-            set
+            catch (FormatException)
+            {
+                Console.WriteLine("Formato de nome não aceito! É preciso ter mais de 5 caracteres");
+            }
+            try
             {
                 DateTime data = DateTime.Now;
-                string Dia = value.Substring(0, 1);
-                string Mes = value.Substring(3, 4);
-                string Ano = value.Substring(6, 9);
+                string Dia = _nascimento.Substring(0, 2);
+                string Mes = _nascimento.Substring(3, 2);
+                string Ano = _nascimento.Substring(6, 4);
 
-                if (value.Length == 10 && value.Contains("/") && Convert.ToInt32(Ano) - data.Year < 13)
+                if (_nascimento.Length == 10 && _nascimento.Contains("/") && (data.Year - Convert.ToInt32(Ano)) > 13)
                 {
-                  
-                  nascimento = value;
-                    
+                    Nascimento = _nascimento;
+                }
+                else if ((data.Year - Convert.ToInt32(Ano) < 13))
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                else
+                {
+                    throw new FormatException();
                 }
             }
-        } 
+            catch (FormatException)
+            {
+                Console.WriteLine("Formato de data não aceito!");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine("Paciente menor que 13 anos!");
+            }
+   
+        }
 
+        long cpf;
+        public long CPF { get { return cpf; } private set { cpf = value; } }
+
+        string nome;
+        public string Nome { get { return nome; } private set { nome = value; } }
+
+
+
+        string nascimento;
+        public string Nascimento { get { return nascimento; } private set { nascimento = value; } }
 
 
 
