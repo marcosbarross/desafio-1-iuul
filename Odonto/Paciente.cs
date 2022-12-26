@@ -13,12 +13,6 @@ namespace Odonto
 {
     public class Paciente : ListaPacientes
     {
-        
-        public void AdicionarNaLista(Odonto.Paciente p)
-        {
-            pacientes.Add(p);
-        }
-
         public Paciente(long _cpf, String _nome, String _nascimento) 
         {
             try
@@ -78,8 +72,6 @@ namespace Odonto
             {
                 Console.WriteLine("Paciente menor que 13 anos!");
             }
-
-            AdicionarNaLista(this);
    
         }
 
