@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace Odonto
 {
-    public class Paciente : ListaPacientes
+    public class Paciente
     {
         public Paciente(long _cpf, String _nome, String _nascimento) 
         {
@@ -50,12 +50,14 @@ namespace Odonto
                 string Dia = _nascimento.Substring(0, 2);
                 string Mes = _nascimento.Substring(3, 2);
                 string Ano = _nascimento.Substring(6, 4);
+                idade = data.Year - Convert.ToInt32(Ano);
 
-                if (_nascimento.Length == 10 && _nascimento.Contains("/") && (data.Year - Convert.ToInt32(Ano)) > 13)
+                if (_nascimento.Length == 10 && _nascimento.Contains("/") && idade > 13)
                 {
+                    
                     Nascimento = _nascimento;
                 }
-                else if ((data.Year - Convert.ToInt32(Ano) < 13))
+                else if (idade < 13)
                 {
                     throw new ArgumentOutOfRangeException();
                 }
@@ -85,6 +87,9 @@ namespace Odonto
 
         string nascimento;
         public string Nascimento { get { return nascimento; } private set { nascimento = value; } }
+
+        int idade;
+        public int Idade { get { return idade; } private set { Idade = idade;  } }
 
 
 

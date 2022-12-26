@@ -35,14 +35,18 @@ namespace Odonto
             index--;
         }
 
-        public void listarpacientes()
+        public void ListarPacientes()
         {
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine("   CPF          NOME   Dt. Nasc.   Idade");
+            Console.WriteLine("------------------------------------------------------------");
             for (int i = 0; i < pacientes.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {pacientes[i].Nome}, {pacientes[i].CPF}, {pacientes[i].Nascimento}");
+                Console.WriteLine($"{i + 1}. {pacientes[i].CPF}, {pacientes[i].Nome}, {pacientes[i].Nascimento}, {pacientes[i].Idade}");
             }
 
-            Console.WriteLine();
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine(" ");
             Console.WriteLine($"{index} pacientes cadastrados!");
         }
 
