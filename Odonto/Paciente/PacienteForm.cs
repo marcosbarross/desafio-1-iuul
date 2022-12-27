@@ -5,10 +5,14 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odonto
+namespace Odonto.Paciente
 {
     public class PacienteForm
     {
+        public string Nome { get; private set; }
+        public string CPF { get; private set; }
+        public string DataNascimento { get; private set; }
+
         public string MenuPrincipal()
         {
             string escolha;
@@ -19,6 +23,8 @@ namespace Odonto
                 Console.WriteLine("1-Cadastro de pacientes");
                 Console.WriteLine("2-Agenda");
                 Console.WriteLine("3-Fim");
+                Console.Write("Digite sua escolha: ");
+
                 escolha = Console.ReadLine();
 
             } while (escolha.NaoEhEscolhaValida(Menu.Principal));
@@ -37,6 +43,8 @@ namespace Odonto
                 Console.WriteLine("3-Listar pacientes (ordenado por CPF)");
                 Console.WriteLine("4-Listar pacientes (ordenado por nome)");
                 Console.WriteLine("5-Voltar p/ menu principal");
+                Console.Write("Digite sua escolha: ");
+
                 escolha = Console.ReadLine();
 
             } while (escolha.NaoEhEscolhaValida(Menu.Cadastra));
@@ -54,11 +62,18 @@ namespace Odonto
                 Console.WriteLine("2-Cancelar agendamento");
                 Console.WriteLine("3-Listar agenda");
                 Console.WriteLine("4-Voltar p/ menu principal");
+                Console.Write("Digite sua escolha: ");
+
                 escolha = Console.ReadLine();
 
             } while (escolha.NaoEhEscolhaValida(Menu.Agenda));
 
             return escolha;
+        }
+
+        public void CadastrarNovoPaciente()
+        {
+
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odonto
+namespace Odonto.Paciente
 {
     public class ListaPacientes
     {

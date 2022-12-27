@@ -45,10 +45,13 @@
   <ItemGroup>
     <Compile Include="Controlador.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="ListaPacientes.cs" />
+    <Compile Include="Paciente\CamposPaciente.cs" />
+    <Compile Include="Paciente\ListaPacientes.cs" />
     <Compile Include="MenuTipos.cs" />
-    <Compile Include="Paciente.cs" />
-    <Compile Include="PacienteForm.cs" />
+    <Compile Include="Paciente\Paciente.cs" />
+    <Compile Include="Paciente\PacienteErros.cs" />
+    <Compile Include="Paciente\PacienteForm.cs" />
+    <Compile Include="Paciente\PacienteValidador.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

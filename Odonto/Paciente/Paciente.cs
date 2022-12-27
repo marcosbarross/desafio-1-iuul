@@ -9,10 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Odonto
+namespace Odonto.Paciente
 {
     public class Paciente
     {
+        public Paciente()
+        { }
+
         public Paciente(long _cpf, String _nome, String _nascimento) 
         {
             try

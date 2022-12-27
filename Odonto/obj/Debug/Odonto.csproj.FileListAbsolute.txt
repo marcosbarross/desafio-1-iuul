@@ -14,3 +14,11 @@ C:\Users\lucas\Documents\GitHub\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.Su
 C:\Users\lucas\Documents\GitHub\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.CoreCompileInputs.cache
 C:\Users\lucas\Documents\GitHub\desafio-1-iuul\Odonto\obj\Debug\Odonto.exe
 C:\Users\lucas\Documents\GitHub\desafio-1-iuul\Odonto\obj\Debug\Odonto.pdb
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\bin\Debug\Odonto.exe.config
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\bin\Debug\Odonto.exe
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\bin\Debug\Odonto.pdb
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.AssemblyReference.cache
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.SuggestedBindingRedirects.cache
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\obj\Debug\Odonto.csproj.CoreCompileInputs.cache
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\obj\Debug\Odonto.exe
+C:\Users\lucas.silva\source\repos\desafio-1-iuul\Odonto\obj\Debug\Odonto.pdb
