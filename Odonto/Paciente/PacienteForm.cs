@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odonto.Paciente
+namespace Odonto.PacienteNameSpace
 {
     public class PacienteForm
     {
@@ -71,9 +71,40 @@ namespace Odonto.Paciente
             return escolha;
         }
 
-        public void CadastrarNovoPaciente()
+        public void CadastrarNovoPaciente(PacienteValidador validador = null)
         {
+            if (validador != null)
+            {
+                Console.WriteLine("\n---------------------------- ERROS ---------------------------");
 
+                // Percorre cada item do Enumerável
+                foreach (CamposPaciente campo in Enum.GetValues(typeof(CamposPaciente)))
+                {
+                    var msg = validador.Erros.GetErrorMessage(campo);
+
+                    if (msg.Length > 0)
+                        Console.WriteLine("{0}: {1}", campo.ToString(), msg);
+                }
+
+                Console.WriteLine("--------------------------------------------------------------");
+            }
+            if (validador == null || validador.Erros.HasError(CamposPaciente.CPF))
+            {
+                Console.Write("CPF: ");
+                CPF = Console.ReadLine();
+            }
+            if (validador == null || validador.Erros.HasError(CamposPaciente.NOME))
+            {
+                Console.Write("Nome: ");
+                Nome = Console.ReadLine();
+            }
+
+
+            if (validador == null || validador.Erros.HasError(CamposPaciente.NASCIMENTO))
+            {
+                Console.Write("Data de nascimento (dd/mm/aaaa): ");
+                DataNascimento = Console.ReadLine();
+            }
         }
     }
 }

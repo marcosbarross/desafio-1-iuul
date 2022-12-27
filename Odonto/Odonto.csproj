@@ -49,7 +49,7 @@
     <Compile Include="Paciente\ListaPacientes.cs" />
     <Compile Include="MenuTipos.cs" />
     <Compile Include="Paciente\Paciente.cs" />
-    <Compile Include="Paciente\PacienteErros.cs" />
+    <Compile Include="Paciente\PacienteErrosValidacao.cs" />
     <Compile Include="Paciente\PacienteForm.cs" />
     <Compile Include="Paciente\PacienteValidador.cs" />
     <Compile Include="Program.cs" />

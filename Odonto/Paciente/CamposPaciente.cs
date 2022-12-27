@@ -1,4 +1,4 @@
-﻿namespace Odonto.Paciente
+﻿namespace Odonto.PacienteNameSpace
 {
     public enum CamposPaciente
     {

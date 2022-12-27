@@ -1,31 +1,38 @@
-﻿using Odonto.Paciente;
+﻿using Odonto.PacienteNameSpace;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Odonto
 {
     public class Controlador
     {
-        private readonly PacienteForm Paciente;
+        private readonly PacienteForm PacienteForm;
+        bool isValid, ExistePaciente, isRight;
+
+        public PacienteValidador Validador { get; }
+
+        public ListaPacientes ListaPacientes { get; }
 
         public Controlador()
         {
-            Paciente = new PacienteForm();
+            PacienteForm = new PacienteForm();
+            Validador = new PacienteValidador();
+            ListaPacientes = new ListaPacientes();
         }
 
         public void Inicia()
         {
+            DateTime Nascimento = new DateTime(2000, 01, 01);
+            var pacienteTeste = new Paciente(16329868093, "Albert", Nascimento);
+
+            ListaPacientes.AdicionarNaLista(pacienteTeste);
+
+            ListaPacientes.ListarPacientesPorCPF();
             MenuPrincipal();
         }
         private void MenuPrincipal()
         {
-            switch (Paciente.MenuPrincipal())
+            switch (PacienteForm.MenuPrincipal())
             {
                 case "1":
                     MenuCadastraPaciente();
@@ -41,7 +48,7 @@ namespace Odonto
 
         private void MenuCadastraPaciente()
         {
-            switch (Paciente.MenuCadastraPaciente())
+            switch (PacienteForm.MenuCadastraPaciente())
             {
                 case "1":
                     CadastrarNovoPaciente();
@@ -51,6 +58,7 @@ namespace Odonto
                     break;
                 case "3":
                     Console.WriteLine("//3 - Listar pacientes(ordenado por CPF)");
+                    ListaPacientes.ListarPacientesPorCPF();
                     break;
                 case "4":
                     Console.WriteLine("//4 - Listar pacientes(ordenado por nome)");
@@ -61,7 +69,7 @@ namespace Odonto
         }
         private void MenuAgenda()
         {
-            switch (Paciente.MenuCadastraPaciente())
+            switch (PacienteForm.MenuCadastraPaciente())
             {
                 case "1":
                     Console.WriteLine("//1 - Agendar consulta");
@@ -78,7 +86,27 @@ namespace Odonto
         }
         private void CadastrarNovoPaciente()
         {
-            Paciente.CadastrarNovoPaciente();
+            PacienteForm.CadastrarNovoPaciente();
+
+            do
+            {
+                isValid = Validador.IsValid(PacienteForm.Nome, PacienteForm.CPF, PacienteForm.DataNascimento);
+                ExistePaciente = ListaPacientes.Pacientes.ExisteNoDicionario(Validador.Paciente.CPF);
+                isRight = isValid && !ExistePaciente;
+
+                if (isRight)
+                {
+                    var paciente = new Paciente(Validador.Paciente.CPF,
+                                                Validador.Paciente.Nome,
+                                                Validador.Paciente.Nascimento);
+
+                    ListaPacientes.AdicionarNaLista(paciente);
+                }
+                else
+                {
+                    PacienteForm.CadastrarNovoPaciente(Validador);
+                }
+            } while (!isRight);
         }
 
     }

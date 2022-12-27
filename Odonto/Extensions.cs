@@ -49,7 +49,6 @@ namespace Odonto
             }
         }
 
-
         public static bool NaoEhEscolhaValida(this string escolha, Menu menu)
         {
             switch (menu)
@@ -66,6 +65,23 @@ namespace Odonto
         public static bool EscolhaUmDoisTres(string escolha)
         {
             return escolha == "1" || escolha == "2" || escolha == "3";
+        }
+        public static bool ExisteNoDicionario<TKey, TValor>(this Dictionary<TKey, TValor> dicionario, TKey chave)
+        {
+            return dicionario.ContainsKey(chave);
+        }
+
+        // Ref: https://stackoverflow.com/questions/2194999/how-to-calculate-an-age-based-on-a-birthday
+        public static int Idade(this DateTime aniversario)
+        {
+            DateTime now = DateTime.Today;
+            int idade = now.Year - aniversario.Year;
+            if (now < aniversario.AddYears(idade))
+            {
+                idade--;
+            }
+
+            return idade;
         }
 
     }

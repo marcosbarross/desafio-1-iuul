@@ -1,38 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odonto.Paciente
+namespace Odonto.PacienteNameSpace
 {
     public class ListaPacientes
     {
-        Dictionary<long, List<Paciente>> pacientess = new Dictionary<long, List<Paciente>>();
-        
-        List<Paciente> pacientes = new List<Paciente>();
-        private int index;
+        public Dictionary<long, Paciente> Pacientes { get; private set; }
+
+        public ListaPacientes()
+        {
+            Pacientes = new Dictionary<long, Paciente>();
+        }
+
+
+        //List<Paciente> pacientes = new List<Paciente>();
+        private int Index { get; set; }
 
         public void AdicionarNaLista(Paciente paciente)
         {
-            try
-            {
-                pacientes.Add(paciente);
-                pacientess.Add(paciente.CPF, pacientes);
-                index++;
-            }
-            catch (ArgumentException)
-            {
-                Console.WriteLine("CPF repetido! Paciente já cadastrado!");
-            }
-
+            Pacientes.Add(paciente.CPF, paciente);
+            Index++;
         }
-        
+        //    try
+        //    {
+        //        pacientes.Add(paciente);
+        //        pacientess.Add(paciente.CPF, pacientes);
+
+        //    }
+        //    catch (ArgumentException)
+        //    {
+        //        Console.WriteLine("CPF repetido! Paciente já cadastrado!");
+        //    }
+
+        //}
+
         public void RemoverDaLista(Paciente paciente)
         {
-            pacientes.Remove(paciente);
-            pacientess.Remove(paciente.CPF);
-            index--;
+            Pacientes.Remove(paciente.CPF);
+            Index--;
         }
 
         public void ListarPacientes()
@@ -40,14 +49,30 @@ namespace Odonto.Paciente
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("   CPF          NOME   Dt. Nasc.   Idade");
             Console.WriteLine("------------------------------------------------------------");
-            for (int i = 0; i < pacientes.Count; i++)
+            //for (int i = 0; i < Pacientes.Count; i++)
+            //{
+            //    Console.WriteLine($"{i + 1}. {Pacientes[i].CPF}, {Pacientes[i].Nome}, {Pacientes[i].Nascimento}");
+            //}
+
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine(" ");
+            Console.WriteLine($"{Index} pacientes cadastrados!");
+        }
+        public void ListarPacientesPorCPF()
+        {
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine("   CPF          NOME   Dt. Nasc.   Idade");
+            Console.WriteLine("------------------------------------------------------------");
+            var DicionarioOrdenado = Pacientes.OrderBy(x => x.Key).ToList();
+
+            for (int i = 0; i < Pacientes.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {pacientes[i].CPF}, {pacientes[i].Nome}, {pacientes[i].Nascimento}, {pacientes[i].Idade}");
+                Console.WriteLine($"{i + 1}. {DicionarioOrdenado[i].Value}");
             }
 
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine(" ");
-            Console.WriteLine($"{index} pacientes cadastrados!");
+            Console.WriteLine($"{Index} pacientes cadastrados!");
         }
 
     }
