@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agenda\Agenda.cs" />
+    <Compile Include="Agenda\AgendaForm.cs" />
     <Compile Include="Controlador.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Paciente\CamposPaciente.cs" />

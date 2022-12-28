@@ -8,7 +8,8 @@ namespace Odonto
 {
     public enum Menu
     {
-        Principal, Cadastra, Agenda
+        Principal, Cadastra, Agenda,
+        ListarAgenda
     }
     public enum Espacos
     {

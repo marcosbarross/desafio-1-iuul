@@ -21,9 +21,9 @@ namespace Odonto.PacienteNameSpace
             Pacientes.Add(paciente.CPF, paciente);
         }
 
-        public void RemoverDaLista(Paciente paciente)
+        public void RemoverDaLista(long pacienteCPF)
         {
-            Pacientes.Remove(paciente.CPF);
+            Pacientes.Remove(pacienteCPF);
         }
 
         public void ListarPacientesPorCPF()

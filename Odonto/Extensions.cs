@@ -53,6 +53,7 @@ namespace Odonto
 
         public static bool NaoEhEscolhaValida(this string escolha, Menu menu)
         {
+            // Todo: Se possível, melhorar esse método. Motivo: Repetição de código
             switch (menu)
             {
                 case Menu.Principal:
@@ -61,6 +62,8 @@ namespace Odonto
                     return !(EscolhaUmDoisTres(escolha) || escolha == "4" || escolha == "5");
                 case Menu.Agenda:
                     return !(EscolhaUmDoisTres(escolha) || escolha == "4");
+                case Menu.ListarAgenda:
+                    return !EscolhaUmDoisTres(escolha);
                 default: return false;
             }
         }

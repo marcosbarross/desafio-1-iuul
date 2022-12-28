@@ -71,6 +71,7 @@ namespace Odonto.PacienteNameSpace
             return escolha;
         }
 
+
         public void CadastrarNovoPaciente(PacienteValidador validador = null)
         {
             if (validador != null)
@@ -105,6 +106,11 @@ namespace Odonto.PacienteNameSpace
                 Console.Write("Data de nascimento (dd/mm/aaaa): ");
                 DataNascimento = Console.ReadLine();
             }
+        }
+
+        public void ExcluirPacienteCadastrado(PacienteValidador validador = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }
