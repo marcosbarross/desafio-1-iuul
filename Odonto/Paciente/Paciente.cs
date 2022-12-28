@@ -13,6 +13,11 @@ namespace Odonto.PacienteNameSpace
 {
     public class Paciente
     {
+        private readonly int cpf = 14;
+        private readonly int nome = 14;
+        private readonly int nascimento = 14;
+        private readonly int idade = 5;
+
         public Paciente()
         { }
 
@@ -30,7 +35,7 @@ namespace Odonto.PacienteNameSpace
 
         public override string ToString()
         {
-            return $"{CPF} {Nome} {Nascimento.ToShortDateString()} {Idade}";
+            return this.ValoresPacientes();
         }
         //public Paciente(long _cpf, String _nome, String _nascimento) 
         //{

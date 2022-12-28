@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Odonto.PacienteNameSpace;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Odonto
 {
@@ -84,5 +86,48 @@ namespace Odonto
             return idade;
         }
 
+        public static void CabecalhoListaPacientes()
+        {
+            Console.WriteLine("------------------------------------------------------------");
+            Console.Write("CPF".PadRight((int)Espacos.CPF));
+            Console.Write("Nome".PadRight((int)Espacos.Nome));
+            Console.Write("Dt. Nasc.".PadRight((int)Espacos.Nascimento));
+            Console.WriteLine("Idade".PadLeft((int)Espacos.Idade));
+            Console.WriteLine("------------------------------------------------------------");
+        }
+        public static void RodapeListaPacientes(this int Index)
+        {
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine(" ");
+            Console.WriteLine($"{Index} pacientes cadastrados!");
+            Console.WriteLine(" ");
+        }
+        public static void ImprimeDicionarioOrdenado<TKey, TValor>(this Dictionary<TKey, TValor> dicionario, OrdenadoPor ordenado)
+        {
+            CabecalhoListaPacientes();
+            var DicionarioOrdenado = new List<KeyValuePair<TKey, TValor>>();
+            switch (ordenado)
+            {
+                case OrdenadoPor.CPF:
+                    DicionarioOrdenado = dicionario.OrderBy(x => x.Key).ToList();
+                    break; 
+                case OrdenadoPor.Nome:
+                    DicionarioOrdenado = dicionario.OrderBy(x => x.Value).ToList();
+                    break;
+            }
+
+            for (int i = 0; i < DicionarioOrdenado.Count; i++)
+            {
+                Console.WriteLine($"{DicionarioOrdenado[i].Value}");
+            }
+            DicionarioOrdenado.Count.RodapeListaPacientes();
+        }
+        public static string ValoresPacientes(this Paciente paciente)
+        {
+            return paciente.CPF.ToString().PadRight((int)Espacos.CPF) +
+                   paciente.Nome.ToString().PadRight((int)Espacos.Nome) +
+                   paciente.Nascimento.ToShortDateString().PadRight((int)Espacos.Nascimento) +
+                   paciente.Idade.ToString().PadLeft((int)Espacos.Idade);
+        }
     }
 }

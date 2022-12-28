@@ -23,7 +23,7 @@ namespace Odonto
         public void Inicia()
         {
             DateTime Nascimento = new DateTime(2000, 01, 01);
-            var pacienteTeste = new Paciente(16329868093, "Albert", Nascimento);
+            var pacienteTeste = new Paciente(16329868093, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", Nascimento);
 
             ListaPacientes.AdicionarNaLista(pacienteTeste);
 
