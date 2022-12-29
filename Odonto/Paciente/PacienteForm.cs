@@ -71,37 +71,21 @@ namespace Odonto.PacienteNameSpace
             return escolha;
         }
 
-
         public void CadastrarNovoPaciente(PacienteValidador validador = null)
         {
-            if (validador != null)
-            {
-                Console.WriteLine("\n---------------------------- ERROS ---------------------------");
+            validador?.MostrarErros();
 
-                // Percorre cada item do Enumerável
-                foreach (CamposPaciente campo in Enum.GetValues(typeof(CamposPaciente)))
-                {
-                    var msg = validador.Erros.GetErrorMessage(campo);
-
-                    if (msg.Length > 0)
-                        Console.WriteLine("{0}: {1}", campo.ToString(), msg);
-                }
-
-                Console.WriteLine("--------------------------------------------------------------");
-            }
-            if (validador == null || validador.Erros.HasError(CamposPaciente.CPF))
+            if (validador == null || validador.HasError(CamposPaciente.CPF))
             {
                 Console.Write("CPF: ");
                 CPF = Console.ReadLine();
             }
-            if (validador == null || validador.Erros.HasError(CamposPaciente.NOME))
+            if (validador == null || validador.HasError(CamposPaciente.NOME))
             {
                 Console.Write("Nome: ");
                 Nome = Console.ReadLine();
             }
-
-
-            if (validador == null || validador.Erros.HasError(CamposPaciente.NASCIMENTO))
+            if (validador == null || validador.HasError(CamposPaciente.NASCIMENTO))
             {
                 Console.Write("Data de nascimento (dd/mm/aaaa): ");
                 DataNascimento = Console.ReadLine();
@@ -110,7 +94,15 @@ namespace Odonto.PacienteNameSpace
 
         public void ExcluirPacienteCadastrado(PacienteValidador validador = null)
         {
-            throw new NotImplementedException();
+            validador?.MostrarErros();
+
+            if (validador == null || validador.HasError(CamposPaciente.CPF))
+            {
+                Console.Write("CPF: ");
+                CPF = Console.ReadLine();
+            }
         }
+        
     }
+    
 }

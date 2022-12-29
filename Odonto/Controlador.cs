@@ -150,7 +150,7 @@ namespace Odonto
                 }
                 else
                 {
-                    PacienteForm.CadastrarNovoPaciente(Validador);
+                    PacienteForm.ExcluirPacienteCadastrado(Validador);
                 }
             } while (!isValid);
         }

@@ -2,10 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Odonto
 {
@@ -132,5 +128,43 @@ namespace Odonto
                    paciente.Nascimento.ToShortDateString().PadRight((int)Espacos.Nascimento) +
                    paciente.Idade.ToString().PadLeft((int)Espacos.Idade);
         }
+
+        public static void MostrarErrosPaciente(this PacienteValidador validador) 
+        {
+            if (!validador.IsEmpty)
+            {
+                Console.WriteLine("\n---------------------------- ERROS ---------------------------");
+
+                // Percorre cada item do Enumerável
+                foreach (CamposPaciente campo in Enum.GetValues(typeof(CamposPaciente)))
+                {
+                    var msg = validador.GetErrorMessage(campo);
+
+                    if (msg.Length > 0)
+                        Console.WriteLine("{0}: {1}", campo.ToString(), msg);
+                }
+
+                Console.WriteLine("--------------------------------------------------------------");
+            }
+        }
+        //public static void MostrarErros<TCampo>(this IValidador<TCampo> validador)
+        //{
+        //    if (!validador.Erros.IsEmpty)
+        //    {
+        //        Console.WriteLine("\n---------------------------- ERROS ---------------------------");
+
+        //        // Percorre cada item do Enumerável
+        //        foreach (TCampo campo in Enum.GetValues(typeof(TCampo)))
+        //        {
+        //            var msg = validador.Erros.GetErrorMessage(campo);
+
+        //            if (msg.Length > 0)
+        //                Console.WriteLine("{0}: {1}", campo.ToString(), msg);
+        //        }
+
+        //        Console.WriteLine("--------------------------------------------------------------");
+        //    }
+        //}
+
     }
 }

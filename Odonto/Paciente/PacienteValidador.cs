@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Odonto.PacienteNameSpace
 {
-    public class PacienteValidador
+    public class PacienteValidador : Validador<CamposPaciente>
     {
-        private readonly PacienteErrosValidacao erros = new PacienteErrosValidacao();
-
         public Paciente Paciente { get; private set; }
 
         public PacienteValidador()
@@ -17,15 +15,14 @@ namespace Odonto.PacienteNameSpace
             Paciente = new Paciente();
         }
 
-        public PacienteErrosValidacao Erros { get { return erros; } }
         public bool PacienteIsValid(string nome, string strCPF, string strDataNascimento, Dictionary<long, Paciente> Pacientes)
         {
-            erros.Clear();
+            Clear();
 
             // Nome
             nome = nome.Trim();
             if (nome.Length < 5)
-                erros.AddError(CamposPaciente.NOME, "Nome deve ter ao menos 5 letras");
+                AddError(CamposPaciente.NOME, "Nome deve ter ao menos 5 letras");
             else
                 Paciente.Nome = nome;
 
@@ -35,11 +32,11 @@ namespace Odonto.PacienteNameSpace
                 Paciente.Nascimento = DateTime.ParseExact(strDataNascimento, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
                 if (Paciente.Nascimento > DateTime.Now.AddYears(-13))
-                    erros.AddError(CamposPaciente.NASCIMENTO, "O paciente deve ter pelo menos 13 anos na data atual");
+                    AddError(CamposPaciente.NASCIMENTO, "O paciente deve ter pelo menos 13 anos na data atual");
             }
             catch (Exception)
             {
-                erros.AddError(CamposPaciente.NASCIMENTO, "Data de nascimento deve estar no formato DD/MM/AAAA");
+                AddError(CamposPaciente.NASCIMENTO, "Data de nascimento deve estar no formato DD/MM/AAAA");
             }
 
             // CPF
@@ -50,45 +47,48 @@ namespace Odonto.PacienteNameSpace
                 Paciente.CPF = long.Parse(strCPF);
 
                 if (!Paciente.CPF.IsValidCPF())
-                    erros.AddError(CamposPaciente.CPF, "CPF inválido");
+                    AddError(CamposPaciente.CPF, "CPF inválido");
                 else
                 {
                     if (Pacientes.ExisteNoDicionario(Paciente.CPF))
                     {
-                        erros.AddError(CamposPaciente.CPF, "CPF repetido! Paciente já cadastrado!");
+                        AddError(CamposPaciente.CPF, "CPF repetido! Paciente já cadastrado!");
                     }
                 }
             }
             catch (Exception)
             {
-                erros.AddError(CamposPaciente.CPF, "CPF deve ter 11 dígitos númericos");
+                AddError(CamposPaciente.CPF, "CPF deve ter 11 dígitos númericos");
             }
 
-            return erros.IsEmpty;
+            return IsEmpty;
         }
         public bool IsValidCPF(string strCPF, Dictionary<long, Paciente> Pacientes)
         {
+            Erros.Clear();
+
             // CPF
             strCPF = strCPF.Trim();
             try
             {
+                // Todo: CPFs que iniciam com zero estão sendo inválidos, sugestão: fazer tratamento usando a string
                 Paciente.CPF = long.Parse(strCPF);
 
                 if (!Paciente.CPF.IsValidCPF())
-                    erros.AddError(CamposPaciente.CPF, "CPF inválido");
+                    AddError(CamposPaciente.CPF, "CPF inválido");
                 else
                 {
                     if (!Pacientes.ExisteNoDicionario(Paciente.CPF))
                     {
-                        erros.AddError(CamposPaciente.CPF, "O paciente não está cadastrado!");
+                        AddError(CamposPaciente.CPF, "O paciente não está cadastrado!");
                     }
                 }
             }
             catch (Exception)
             {
-                erros.AddError(CamposPaciente.CPF, "CPF deve ter 11 dígitos númericos");
+                AddError(CamposPaciente.CPF, "CPF deve ter 11 dígitos númericos");
             }
-            return erros.IsEmpty;
+            return IsEmpty;
         }
     }
 }
