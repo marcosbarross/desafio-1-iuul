@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Odonto.Controlador;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,6 @@ namespace Odonto
     {
         static void Main(string[] args)
         {
-
-
             //ListaPacientes lista = new ListaPacientes();
             //Paciente p1 = new Paciente(62813265047, "Marcos", "17/07/2001");
             //lista.AdicionarNaLista(p1);
@@ -26,7 +25,7 @@ namespace Odonto
 
             //lista.ListarPacientes();
 
-            Controlador controlador = new Controlador();
+            GeralControlador controlador = new GeralControlador();
 
             controlador.Inicia();
         }

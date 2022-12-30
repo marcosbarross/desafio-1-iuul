@@ -44,10 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agenda\Agenda.cs" />
+    <Compile Include="Agenda\AgendaExtensions.cs" />
+    <Compile Include="Agenda\Agendamento.cs" />
     <Compile Include="Agenda\AgendaForm.cs" />
-    <Compile Include="Controlador.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Agenda\AgendaValidador.cs" />
+    <Compile Include="Agenda\CamposAgenda.cs" />
+    <Compile Include="GeralControlador.cs" />
+    <Compile Include="GeralExtensions.cs" />
     <Compile Include="ErrosValidacao.cs" />
+    <Compile Include="Paciente\PacienteExtensions.cs" />
     <Compile Include="Validador.cs" />
     <Compile Include="Paciente\CamposPaciente.cs" />
     <Compile Include="Paciente\ListaPacientes.cs" />

@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odonto.Agenda
+namespace Odonto
 {
     public class Agenda
     {
-        public DateTime Data { get; set; }
-        public DateTime HoraInicio { get; set; }
-        public DateTime HoraFim { get; set; }
-        public DateTime Tempo { get; }
+        public SortedList<DateTime, Agendamento> Agendamentos { get; private set; }
+        public Agenda() 
+        {
+            Agendamentos = new SortedList<DateTime, Agendamento>();
+        }
+        public void AgendarConsulta(string CPF, TimeSpan diaConsulta, TimeSpan inicioConsulta, TimeSpan fimConsulta)
+        {
+
+        }
     }
 }

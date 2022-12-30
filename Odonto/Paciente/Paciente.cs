@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Odonto.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,15 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Odonto.PacienteNameSpace
+namespace Odonto
 {
     public class Paciente
     {
-        private readonly int cpf = 14;
-        private readonly int nome = 14;
-        private readonly int nascimento = 14;
-        private readonly int idade = 5;
-
         public Paciente()
         { }
 

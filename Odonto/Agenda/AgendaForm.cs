@@ -1,13 +1,19 @@
-﻿using System;
+﻿using Odonto.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odonto.Agenda
+namespace Odonto
 {
     public class AgendaForm
     {
+        public string CPF { get; private set; }
+        public string Consulta { get; private set; }
+        public string Inicio { get; private set; }
+        public string Fim { get; private set; }
+
         public string MenuListarAgenda()
         {
             string escolha;
@@ -25,6 +31,21 @@ namespace Odonto.Agenda
             } while (escolha.NaoEhEscolhaValida(Menu.ListarAgenda));
 
             return escolha;
+        }
+        public void AgendarConsulta(AgendaValidador validador = null)
+        {
+            //validador?.MostrarErro();
+
+            if (validador == null || validador.HasError(CamposAgenda.CPF))
+            {
+                Console.Write("CPF: ");
+                CPF = Console.ReadLine();
+            }
+            if (validador == null || validador.HasError(CamposAgenda.CONSULTA))
+            {
+                Console.Write("Data da consulta (dd/mm/aaaa): ");
+                Consulta = Console.ReadLine();
+            }
         }
     }
 }

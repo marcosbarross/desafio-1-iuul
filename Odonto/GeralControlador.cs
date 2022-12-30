@@ -1,27 +1,33 @@
-﻿using Odonto.Agenda;
-using Odonto.PacienteNameSpace;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Odonto
+namespace Odonto.Controlador
 {
-    public class Controlador
+    public class GeralControlador
     {
         private readonly PacienteForm PacienteForm;
         private readonly AgendaForm AgendaForm;
         bool isValid;
 
         public PacienteValidador Validador { get; }
+        public AgendaValidador AgendaValidador { get; }
+
 
         public ListaPacientes ListaPacientes { get; }
 
-        public Controlador()
+        public Agenda ListaAgendamento { get; }
+
+        public GeralControlador()
         {
             PacienteForm = new PacienteForm();
             AgendaForm = new AgendaForm();
 
             Validador = new PacienteValidador();
             ListaPacientes = new ListaPacientes();
+
+            ListaAgendamento = new Agenda();
+
+            AgendaValidador = new AgendaValidador();
         }
 
         public void Inicia()
@@ -75,10 +81,11 @@ namespace Odonto
         }
         private void MenuAgenda()
         {
-            switch (PacienteForm.MenuCadastraPaciente())
+            switch (PacienteForm.MenuAgenda())
             {
                 case "1":
                     Console.WriteLine("//1 - Agendar consulta");
+                    AgendarConsulta();
                     break;
                 case "2":
                     Console.WriteLine("//2 - Cancelar agendamento");
@@ -91,6 +98,26 @@ namespace Odonto
             // Sempre retorna ao Menu Principal depois de processar o pedido
             MenuPrincipal();
         }
+
+        private void AgendarConsulta()
+        {
+            AgendaForm.AgendarConsulta();
+            do
+            {
+                isValid = AgendaValidador.AgendamentoIsValid(AgendaForm.CPF, AgendaForm.Consulta, AgendaForm.Inicio, AgendaForm.Fim, ListaAgendamento.Agendamentos, ListaPacientes.Pacientes);
+
+                if (isValid)
+                {
+                    Console.WriteLine("Fim");
+                }
+                else
+                {
+                    AgendaForm.AgendarConsulta(AgendaValidador);
+                }
+            } while (!isValid);
+            MenuAgenda();
+        }
+
         private void MenuListarAgenda()
         {
             switch (AgendaForm.MenuListarAgenda())
