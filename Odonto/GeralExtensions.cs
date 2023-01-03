@@ -96,7 +96,7 @@ namespace Odonto.Extensions
                     DicionarioOrdenado = dicionario.OrderBy(x => x.Key).ToList();
                     break; 
                 case OrdenadoPor.Nome:
-                    DicionarioOrdenado = dicionario.OrderBy(x => x.Value).ToList();
+                    DicionarioOrdenado = dicionario.OrderBy(x => x.Key).ToList();
                     break;
             }
 
