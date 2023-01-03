@@ -8,7 +8,6 @@ namespace Odonto
         public string Nome { get; private set; }
         public string CPF { get; private set; }
         public string DataNascimento { get; private set; }
-
         public string MenuPrincipal()
         {
             string escolha;
@@ -67,38 +66,21 @@ namespace Odonto
             return escolha;
         }
 
-        public void CadastrarNovoPaciente(PacienteValidador validador = null)
+        public void SolicitarCPF()
         {
-            validador?.MostrarErros();
-
-            if (validador == null || validador.HasError(CamposPaciente.CPF))
-            {
-                Console.Write("CPF: ");
-                CPF = Console.ReadLine();
-            }
-            if (validador == null || validador.HasError(CamposPaciente.NOME))
-            {
-                Console.Write("Nome: ");
-                Nome = Console.ReadLine();
-            }
-            if (validador == null || validador.HasError(CamposPaciente.NASCIMENTO))
-            {
-                Console.Write("Data de nascimento (dd/mm/aaaa): ");
-                DataNascimento = Console.ReadLine();
-            }
+            Console.Write("CPF: ");
+            CPF = Console.ReadLine();
         }
-
-        public void ExcluirPacienteCadastrado(PacienteValidador validador = null)
+        public void SolicitarNome()
         {
-            validador?.MostrarErros();
-
-            if (validador == null || validador.HasError(CamposPaciente.CPF))
-            {
-                Console.Write("CPF: ");
-                CPF = Console.ReadLine();
-            }
+            Console.Write("Nome: ");
+            Nome = Console.ReadLine();
         }
-        
+        public void SolicitarNascimento()
+        {
+            Console.Write("Data de Nascimento: ");
+            DataNascimento = Console.ReadLine();
+        }
     }
-    
+
 }

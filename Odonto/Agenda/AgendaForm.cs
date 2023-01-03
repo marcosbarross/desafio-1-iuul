@@ -32,20 +32,30 @@ namespace Odonto
 
             return escolha;
         }
-        public void AgendarConsulta(AgendaValidador validador = null)
-        {
-            //validador?.MostrarErro();
 
-            if (validador == null || validador.HasError(CamposAgenda.CPF))
-            {
-                Console.Write("CPF: ");
-                CPF = Console.ReadLine();
-            }
-            if (validador == null || validador.HasError(CamposAgenda.CONSULTA))
-            {
-                Console.Write("Data da consulta (dd/mm/aaaa): ");
-                Consulta = Console.ReadLine();
-            }
+        public void SolicitarCPF()
+        {
+            Console.Write("CPF: ");
+            CPF = Console.ReadLine();
         }
+        public void SolicitarDataConsulta()
+        {
+            Console.Write("Data da consulta (ddMMaaaa): ");
+            Consulta = Console.ReadLine();
+        }
+        public void SolicitarHoraInicio()
+        {
+            Console.Write("Hora inicial (HHmm): ");
+            Inicio = Console.ReadLine();
+        }
+        public void SolicitarHoraFim()
+        {
+            Console.Write("Hora final (HHmm): ");
+            Fim = Console.ReadLine();
+        }
+
+
+
+
     }
 }

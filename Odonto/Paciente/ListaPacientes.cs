@@ -10,11 +10,11 @@ namespace Odonto
 {
     public class ListaPacientes
     {
-        public Dictionary<long, Paciente> Pacientes { get; private set; }
+        public Dictionary<string, Paciente> Pacientes { get; private set; }
 
         public ListaPacientes()
         {
-            Pacientes = new Dictionary<long, Paciente>();
+            Pacientes = new Dictionary<string, Paciente>();
         }
 
         public void AdicionarNaLista(Paciente paciente)
@@ -22,7 +22,7 @@ namespace Odonto
             Pacientes.Add(paciente.CPF, paciente);
         }
 
-        public void RemoverDaLista(long pacienteCPF)
+        public void RemoverDaLista(string pacienteCPF)
         {
             Pacientes.Remove(pacienteCPF);
         }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Odonto;
 
 
@@ -8,46 +10,90 @@ namespace Odonto.Extensions
 {
     public static class GeralExtensions
     {
-        public static bool IsValidCPF(this long cpf)
+        public static bool IsValidCPF(this string strCPF, Dictionary<string, Paciente> Pacientes)
         {
-            if (cpf > 99999999999 || cpf < 11111111111)
-                return false;
-            else if (cpf == long.Parse(new string((char)((cpf % 10) + 48), 11)))
-                return false;
-            else
+            // CPF
+            try
             {
-                long cpf_sem_dv = cpf / 100;
-
-                long soma = 0;
-                for (int valor = 2; valor <= 11; valor++)
-                {
-                    soma += cpf_sem_dv % 10 * valor;
-                    cpf_sem_dv /= 10;
-                }
-
-                int dv1 = (int)(11 - (soma % 11));
-
-                if (dv1 > 9)
-                    dv1 = 0;
-
-                cpf_sem_dv = cpf / 10;
-
-                soma = 0;
-                for (int valor = 2; valor <= 12; valor++)
-                {
-                    soma += cpf_sem_dv % 10 * valor;
-                    cpf_sem_dv /= 10;
-                }
-
-                int dv2 = (int)(11 - (soma % 11));
-
-                if (dv2 > 9)
-                    dv2 = 0;
-
-                return dv1 == cpf % 100 / 10 && dv2 == cpf % 10;
+                if (!strCPF.IsCpf())
+                    throw new Exception("Erro: CPF inválido");
+                if (Pacientes.ExisteNoDicionario(strCPF))
+                    throw new Exception("Erro: CPF já cadastrado");
             }
+            catch (Exception ex)
+            {
+                return ex.EncerrarProcessoComErro();
+            }
+            return true;
         }
+        public static bool CanDeleteCPF(this string strCPF, Dictionary<string, Paciente> Pacientes, SortedList<DateTime, Agendamento> Agendamentos)
+        {
+            // CPF
+            try
+            {
+                if (!strCPF.IsCpf())
+                    throw new Exception("Erro: CPF inválido");
+                if (!Pacientes.ExisteNoDicionario(strCPF))
+                    throw new Exception("Erro: paciente não cadastrado");
+                //ToDo: Verificar se o CPF tem consulta agendada
+            }
+            catch (Exception ex)
+            {
+                return ex.EncerrarProcessoComErro();
+            }
+            return true;
+        }
+        public static bool IsValidCPFAgenda(this string strCPF, Dictionary<string, Paciente> Pacientes)
+        {
+            // CPF
+            try
+            {
+                if (!strCPF.IsCpf())
+                    throw new Exception("Erro: CPF inválido");
+                if (!Pacientes.ExisteNoDicionario(strCPF))
+                    throw new Exception("Erro: paciente não cadastrado");
+            }
+            catch (Exception ex)
+            {
+                return ex.EncerrarProcessoComErro();
+            }
+            return true;
+        }
+        public static bool IsCpf(this string cpf)
+        {
+            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            string tempCpf;
+            string digito;
+            int soma;
+            int resto;
+            cpf = cpf.Trim();
+            //cpf = cpf.Replace(".", "").Replace("-", "");
+            if (cpf.Length != 11)
+                return false;
+            tempCpf = cpf.Substring(0, 9);
+            soma = 0;
 
+            for (int i = 0; i < 9; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
+            resto = soma % 11;
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+            digito = resto.ToString();
+            tempCpf = tempCpf + digito;
+            soma = 0;
+            for (int i = 0; i < 10; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
+            resto = soma % 11;
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+            digito = digito + resto.ToString();
+            return cpf.EndsWith(digito);
+        }
         public static bool NaoEhEscolhaValida(this string escolha, Menu menu)
         {
             // Todo: Se possível, melhorar esse método. Motivo: Repetição de código
@@ -94,9 +140,9 @@ namespace Odonto.Extensions
             {
                 case OrdenadoPor.CPF:
                     DicionarioOrdenado = dicionario.OrderBy(x => x.Key).ToList();
-                    break; 
+                    break;
                 case OrdenadoPor.Nome:
-                    DicionarioOrdenado = dicionario.OrderBy(x => x.Key).ToList();
+                    DicionarioOrdenado = dicionario.OrderBy(x => x.Value).ToList();
                     break;
             }
 
@@ -106,25 +152,26 @@ namespace Odonto.Extensions
             }
             DicionarioOrdenado.Count.RodapeListaPacientes();
         }
-        
 
-        public static void MostrarErrosPaciente(this PacienteValidador validador) 
+        public static bool EncerrarProcessoComErro(this Exception ex)
         {
-            if (!validador.IsEmpty)
-            {
-                Console.WriteLine("\n---------------------------- ERROS ---------------------------");
+            Console.WriteLine(ex.Message);
+            return false;
+        }
 
-                // Percorre cada item do Enumerável
-                foreach (CamposPaciente campo in Enum.GetValues(typeof(CamposPaciente)))
-                {
-                    var msg = validador.GetErrorMessage(campo);
+        public static DateTime VerificaData(this string data)
+        {
+            if (!DateTime.TryParseExact(data, "ddMMyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime consulta))
+                throw new Exception("Data deve estar no formato ddMMaaaa");
 
-                    if (msg.Length > 0)
-                        Console.WriteLine("{0}: {1}", campo.ToString(), msg);
-                }
+            return consulta;
+        }
+        public static DateTime VerificaHora(this string hora)
+        {
+            if (!DateTime.TryParseExact(hora, "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime horario))
+                throw new Exception("O formato de hora deve estar em HHmm");
 
-                Console.WriteLine("--------------------------------------------------------------");
-            }
+            return horario;
         }
         //public static void MostrarErros<TCampo>(this IValidador<TCampo> validador)
         //{

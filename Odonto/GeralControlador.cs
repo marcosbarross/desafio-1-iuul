@@ -33,7 +33,7 @@ namespace Odonto.Controlador
         public void Inicia()
         {
             DateTime Nascimento = new DateTime(2000, 01, 01);
-            var pacienteTeste = new Paciente(16329868093, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", Nascimento);
+            var pacienteTeste = new Paciente("16329868093", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", Nascimento);
 
             ListaPacientes.AdicionarNaLista(pacienteTeste);
 
@@ -49,11 +49,12 @@ namespace Odonto.Controlador
                     break;
                 case "2":
                     MenuAgenda();
-                    break; 
+                    break;
                 case "3":
                     Console.WriteLine("Fim");
-                    break;
+                    return;
             }
+            MenuPrincipal();
         }
 
         private void MenuCadastraPaciente()
@@ -75,15 +76,18 @@ namespace Odonto.Controlador
                     Console.WriteLine("//4 - Listar pacientes(ordenado por nome)");
                     ListaPacientes.ListarPacientesPorNome();
                     break;
+                case "5":
+                    return;
             }
-            // Sempre retorna ao Menu Principal depois de processar o pedido
-            MenuPrincipal();
+            MenuCadastraPaciente();
         }
         private void MenuAgenda()
         {
             switch (PacienteForm.MenuAgenda())
             {
                 case "1":
+                    //ToDo: após cadastrar uma consulta, a opcao retornar ao menu principal e depois Fim, não encerra
+                    //o processo na primeira vez, apenas ao inserir novamente a opcao Fim
                     Console.WriteLine("//1 - Agendar consulta");
                     AgendarConsulta();
                     break;
@@ -94,28 +98,20 @@ namespace Odonto.Controlador
                     MenuListarAgenda();
                     Console.WriteLine("//3 - Listar agenda");
                     break;
+                case "4":
+                    return;
             }
-            // Sempre retorna ao Menu Principal depois de processar o pedido
-            MenuPrincipal();
+            MenuAgenda();
         }
 
         private void AgendarConsulta()
         {
-            AgendaForm.AgendarConsulta();
-            do
-            {
-                isValid = AgendaValidador.AgendamentoIsValid(AgendaForm.CPF, AgendaForm.Consulta, AgendaForm.Inicio, AgendaForm.Fim, ListaAgendamento.Agendamentos, ListaPacientes.Pacientes);
+            SolicitarCPFAgenda();
+            SolicitarDataConsulta();
+            SolicitarHoraInicio();
+            SolicitarHoraFim();
 
-                if (isValid)
-                {
-                    Console.WriteLine("Fim");
-                }
-                else
-                {
-                    AgendaForm.AgendarConsulta(AgendaValidador);
-                }
-            } while (!isValid);
-            MenuAgenda();
+            Console.WriteLine("Agendamento realizado com sucesso!");
         }
 
         private void MenuListarAgenda()
@@ -124,63 +120,121 @@ namespace Odonto.Controlador
             {
                 case "1":
                     Console.WriteLine("//1 - Listar toda agenda");
-                    break; 
+                    break;
                 case "2":
                     Console.WriteLine("//2 - Listar agenda periodo");
-
                     break;
                 case "3":
-                    MenuAgenda();
-                    break;
+                    return;
 
             }
-            MenuAgenda();
+            MenuListarAgenda();
         }
 
         private void CadastrarNovoPaciente()
         {
-            PacienteForm.CadastrarNovoPaciente();
+            SolicitarCPF();
+            SolicitarNome();
+            SolicitarNascimento();
 
+            Console.WriteLine("Paciente cadastrado com sucesso!");
+        }
+
+        private void SolicitarCPF()
+        {
+            // CPF
             do
             {
-                isValid = Validador.PacienteIsValid(PacienteForm.Nome, PacienteForm.CPF, PacienteForm.DataNascimento, ListaPacientes.Pacientes);
+                PacienteForm.SolicitarCPF();
+                isValid = Validador.IsValidCPF(PacienteForm.CPF, ListaPacientes.Pacientes);
 
-                if (isValid)
-                {
-                    var paciente = new Paciente(Validador.Paciente.CPF,
-                                                Validador.Paciente.Nome,
-                                                Validador.Paciente.Nascimento);
+            } while (!isValid);
+        }
+        private void SolicitarNome()
+        {
+            // Nome
+            do
+            {
+                PacienteForm.SolicitarNome();
+                isValid = Validador.IsValidNome(PacienteForm.Nome);
 
-                    ListaPacientes.AdicionarNaLista(paciente);
-                }
-                else
-                {
-                    PacienteForm.CadastrarNovoPaciente(Validador);
-                }
+            } while (!isValid);
+        }
+        private void SolicitarNascimento()
+        {
+            // Nascimento
+            do
+            {
+                PacienteForm.SolicitarNascimento();
+                isValid = Validador.IsValidNascimento(PacienteForm.DataNascimento);
+
+            } while (!isValid);
+        }
+
+        private void SolicitarCPFAgenda()
+        {
+            // CPF
+            do
+            {
+                AgendaForm.SolicitarCPF();
+                isValid = AgendaValidador.IsValidCPF(AgendaForm.CPF, ListaPacientes.Pacientes);
+
+            } while (!isValid);
+        }
+        private void SolicitarDataConsulta()
+        {
+            // Data de Consulta
+            do
+            {
+                AgendaForm.SolicitarDataConsulta();
+                isValid = AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
+
+            } while (!isValid);
+        }
+        private void SolicitarHoraInicio()
+        {
+            // Hora Inicio Consulta
+            do
+            {
+                AgendaForm.SolicitarHoraInicio();
+                isValid = AgendaValidador.IsValidHoraInicio(AgendaForm.Inicio);
+
+            } while (!isValid);
+        }
+        private void SolicitarHoraFim()
+        {
+            // Hora Fim Consulta
+            do
+            {
+                AgendaForm.SolicitarHoraFim();
+                isValid = AgendaValidador.IsValidHoraFim(AgendaForm.Fim);
+
             } while (!isValid);
         }
         private void ExcluirPacienteCadastrado()
         {
-            PacienteForm.ExcluirPacienteCadastrado();
-            do
+            SolicitarExclusaoCPF();
+
+            if (isValid)
             {
-                isValid = Validador.IsValidCPF(PacienteForm.CPF, ListaPacientes.Pacientes);
+                // TODO
+                // a. Um paciente com uma consulta agendada futura não pode ser excluído.
+                // b. Se o paciente tiver uma ou mais consultas agendadas passadas, ele pode ser excluído.
+                //    Nesse caso, os respectivos agendamentos também devem ser excluídos.
 
-                if (isValid)
-                {
-                    // TODO
-                    // a. Um paciente com uma consulta agendada futura não pode ser excluído.
-                    // b. Se o paciente tiver uma ou mais consultas agendadas passadas, ele pode ser excluído.
-                    //    Nesse caso, os respectivos agendamentos também devem ser excluídos.
-
-                    ListaPacientes.RemoverDaLista(Validador.Paciente.CPF);
-                }
-                else
-                {
-                    PacienteForm.ExcluirPacienteCadastrado(Validador);
-                }
-            } while (!isValid);
+                ListaPacientes.RemoverDaLista(Validador.Paciente.CPF);
+            }
         }
 
+        private void SolicitarExclusaoCPF()
+        {
+            // Hora Fim Consulta
+            do
+            {
+                AgendaForm.SolicitarCPF();
+                isValid = AgendaValidador.CanDeleteCPF(AgendaForm.CPF, ListaPacientes.Pacientes, ListaAgendamento.Agendamentos);
+
+            } while (!isValid);
+        }
     }
 }

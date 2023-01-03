@@ -17,14 +17,14 @@ namespace Odonto
         public Paciente()
         { }
 
-        public Paciente(long _cpf, String _nome, DateTime _nascimento)
+        public Paciente(string _cpf, String _nome, DateTime _nascimento)
         {
             CPF = _cpf;
             Nome = _nome;
             Nascimento = _nascimento;
             Idade = Nascimento.Idade();
         }
-        public long CPF { get; set; }
+        public string CPF { get; set; }
         public string Nome { get; set; }
         public DateTime Nascimento { get; set; }
         public int Idade { get; }

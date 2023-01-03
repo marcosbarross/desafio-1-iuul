@@ -1,6 +1,7 @@
 ﻿using Odonto.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Odonto
 {
-    public class AgendaValidador : Validador<CamposAgenda>
+    public class AgendaValidador
     {
         public Agendamento Agendamento { get; private set; }
 
@@ -16,46 +17,67 @@ namespace Odonto
         {
             Agendamento = new Agendamento();
         }
-        private bool EncerraProcesso(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return IsEmpty;
-        }
-        public bool AgendamentoIsValid(string strCPF, string strConsulta, string strInicio, string strFim, SortedList<DateTime, Agendamento> Agendamentos, Dictionary<long, Paciente> Pacientes)
-        {
-            // CPF
-            strCPF = strCPF.Trim();
 
+        public bool IsValidCPF(string strCPF, Dictionary<string, Paciente> Pacientes)
+        {
+            Agendamento.Paciente.CPF = strCPF.Trim();
+            return strCPF.IsValidCPFAgenda(Pacientes);
+        }
+        public bool IsValidDataConsulta(string strConsulta)
+        {
             try
             {
-                if (!long.TryParse(strCPF, out long cpf))
-                    throw new Exception("Erro: CPF deve ter 11 dígitos númericos");
-
-                Agendamento.Paciente.CPF = cpf;
-
-                if (!cpf.IsValidCPF())
-                   throw new Exception("Erro: CPF inválido");
-                else if(!Pacientes.ExisteNoDicionario(cpf))
-                   throw new Exception("Erro: paciente não cadastrado");
+                // Data de Consulta
+                Agendamento.DataConsulta = strConsulta.VerificaData();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                AddError(CamposAgenda.CPF, ex.Message);
-                return EncerraProcesso(ex);
+                return ex.EncerrarProcessoComErro();
             }
-
-            // Data de Consulta
+            return true;
+        }
+        public bool IsValidHoraInicio(string strInicio)
+        {
             try
             {
-                Agendamento.DataConsulta = DateTime.ParseExact(strConsulta, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                // Data de Consulta
+                Agendamento.HoraInicio = strInicio.VerificaHora().TimeOfDay;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Exception ex = new Exception("Data da consulta deve estar no formato dd/mm/aaaa");
-                AddError(CamposAgenda.CONSULTA, ex.Message);
-                return EncerraProcesso(ex);
+                return ex.EncerrarProcessoComErro();
             }
-            return IsEmpty;
+            return true;
         }
+        public bool IsValidHoraFim(string strFim)
+        {
+            try
+            {
+                // Data de Consulta
+                Agendamento.HoraFim = strFim.VerificaHora().TimeOfDay;
+            }
+            catch (Exception ex)
+            {
+                return ex.EncerrarProcessoComErro();
+            }
+            return true;
+        }
+
+        public bool CanDeleteCPF(string strCPF, Dictionary<string, Paciente> Pacientes, SortedList<DateTime, Agendamento> Agendamentos)
+        {
+            try
+            {
+                Agendamento.Paciente.CPF = strCPF.Trim();
+                strCPF.CanDeleteCPF(Pacientes, Agendamentos);
+            }
+            catch (Exception ex)
+            {
+                return ex.EncerrarProcessoComErro();
+            }
+            return true;
+        }
+
+
+
     }
 }
