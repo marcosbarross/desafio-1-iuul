@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Odonto.Extensions
 {
+    /// <summary>
+    /// Define as extensões usadas pela Classe Agenda e relacionadas com agendamento.
+    /// </summary>
     public static class AgendaExtensions
     {
         public static string ValoresAgenda(this Agendamento agendamento)
