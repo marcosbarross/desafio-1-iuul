@@ -49,7 +49,6 @@
     <Compile Include="Agenda\AgendaForm.cs" />
     <Compile Include="Agenda\AgendaValidador.cs" />
     <Compile Include="Agenda\CamposAgenda.cs" />
-    <Compile Include="Excecoes.cs" />
     <Compile Include="GeralControlador.cs" />
     <Compile Include="GeralExtensions.cs" />
     <Compile Include="Paciente\PacienteExtensions.cs" />
