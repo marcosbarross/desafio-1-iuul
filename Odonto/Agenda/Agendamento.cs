@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Odonto
 {
+    /// <summary>
+    /// Define um agendamento realizado para um Paciente
+    /// </summary>
     public class Agendamento
     {
         public DateTime DataConsulta { get; set; }
@@ -17,11 +20,18 @@ namespace Odonto
         public DateTime Nascimento { get; set; }
         public Paciente Paciente { get; set; }
 
-        public Agendamento() 
+        public Agendamento()
         {
             Paciente = new Paciente();
         }
 
+        /// <summary>
+        /// Cria uma instância de um agendamento.
+        /// </summary>
+        /// <param name="data">Representa o valor da propriedade <see cref="DataConsulta"/> e deve estar no formato ddMMaaaa.</param>
+        /// <param name="horaInicio">Representa o valor da propriedade <see cref="HoraInicio"/> e deve estar no formato HHmm.</param>
+        /// <param name="horaFim">Representa o valor da propriedade <see cref="HoraFim"/> e deve estar no formato HHmm.</param>
+        /// <param name="paciente">Representa o valor de uma instância de <see cref="Paciente"/> e não deve ser nula.</param>
         public Agendamento(DateTime data, TimeSpan horaInicio, TimeSpan horaFim, Paciente paciente)
         {
             DataConsulta = data.Date + horaInicio;

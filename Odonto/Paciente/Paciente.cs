@@ -1,22 +1,22 @@
 ﻿using Odonto.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Odonto
 {
+    /// <summary>
+    /// Define um Paciente da Clínica Odontológica.
+    /// </summary>
     public class Paciente
     {
         public Paciente()
         { }
 
+        /// <summary>
+        /// Cria uma instância de Paciente com os argumentos utilizados.
+        /// </summary>
+        /// <param name="_cpf">Representa o valor da propriedade <see cref="CPF"/> e deve possuir 11 dígitos númericos.</param>
+        /// <param name="_nome">Representa o valor da propriedade <see cref="Nome"/> e deve possuir pelo menos 5 letras.</param>
+        /// <param name="_nascimento">Representa o valor da propriedade <see cref="Nascimento"/> e deve estar no formato ddMMaaaa.</param>
         public Paciente(string _cpf, String _nome, DateTime _nascimento)
         {
             CPF = _cpf;
@@ -28,10 +28,16 @@ namespace Odonto
         public string Nome { get; set; }
         public DateTime Nascimento { get; set; }
         public int Idade { get; }
-
+        /// <summary>
+        /// Sobreescreve o método ToString para fornecer a saída desejada.
+        /// </summary>
+        /// <returns>Retorna uma sequência de valores de texto, de uma instância de Paciente, de acordo com os requisitos do projeto.</returns>
         public override string ToString()
         {
-            return this.ValoresPacientes();
+            return CPF.ToString().PadRight((int)Espacos.CPF) +
+                   Nome.ToString().PadRight((int)Espacos.Nome) +
+                   Nascimento.ToShortDateString().PadRight((int)Espacos.Nascimento) +
+                   Idade.ToString().PadLeft((int)Espacos.Idade);
         }
         //public Paciente(long _cpf, String _nome, String _nascimento) 
         //{
