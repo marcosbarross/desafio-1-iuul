@@ -153,6 +153,18 @@ namespace Odonto.Extensions
             DicionarioOrdenado.Count.RodapeListaPacientes();
         }
 
+        public static void ImprimeListaOrdenada<TKey, TValor>(this SortedList<TKey, TValor> lista)
+        {
+            AgendaExtensions.CabecalhoListaAgenda();
+
+            foreach (var item in lista)
+            {
+                Console.WriteLine($"{item.Value}");
+            }
+
+            AgendaExtensions.RodapeListaAgenda();
+        }
+
         public static bool EncerrarProcessoComErro(this Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -173,24 +185,12 @@ namespace Odonto.Extensions
 
             return horario;
         }
-        //public static void MostrarErros<TCampo>(this IValidador<TCampo> validador)
-        //{
-        //    if (!validador.Erros.IsEmpty)
-        //    {
-        //        Console.WriteLine("\n---------------------------- ERROS ---------------------------");
-
-        //        // Percorre cada item do Enumerável
-        //        foreach (TCampo campo in Enum.GetValues(typeof(TCampo)))
-        //        {
-        //            var msg = validador.Erros.GetErrorMessage(campo);
-
-        //            if (msg.Length > 0)
-        //                Console.WriteLine("{0}: {1}", campo.ToString(), msg);
-        //        }
-
-        //        Console.WriteLine("--------------------------------------------------------------");
-        //    }
-        //}
-
+        //Ref: https://stackoverflow.com/questions/17590528/pad-left-pad-right-pad-center-string
+        public static string PadCenter(this string str, int length)
+        {
+            int spaces = length - str.Length;
+            int padLeft = spaces / 2 + str.Length;
+            return str.PadLeft(padLeft).PadRight(length);
+        }
     }
 }

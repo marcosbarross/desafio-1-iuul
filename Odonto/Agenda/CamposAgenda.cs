@@ -6,6 +6,6 @@
     }
     public enum EspacosAgenda
     {
-        CPF = 12, Nome = 33, Nascimento = 10, Idade = 5
+        CPF = 12, Nome = 22, Data = 11, Idade = 4, Tempo = 6
     }
 }
