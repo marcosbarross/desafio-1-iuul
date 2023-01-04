@@ -3,10 +3,8 @@ using System;
 
 namespace Odonto
 {
-    public class PacienteForm
+    public class PacienteForm : Paciente
     {
-        public string Nome { get; private set; }
-        public string CPF { get; private set; }
         public string DataNascimento { get; private set; }
         public string MenuPrincipal()
         {

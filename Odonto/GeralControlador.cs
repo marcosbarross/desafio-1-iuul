@@ -155,6 +155,7 @@ namespace Odonto.Controlador
             SolicitarCPF();
             SolicitarNome();
             SolicitarNascimento();
+            ListaPacientes.AdicionarNaLista(PacienteForm);
 
             Console.WriteLine("Paciente cadastrado com sucesso!");
         }
