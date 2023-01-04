@@ -25,7 +25,6 @@ namespace Odonto.Controlador
             Validador = new PacienteValidador();
             ListaPacientes = new ListaPacientes();
 
-
             ListaAgendamento = new Agenda();
 
             AgendaValidador = new AgendaValidador();
@@ -34,11 +33,28 @@ namespace Odonto.Controlador
         public void Inicia()
         {
             DateTime Nascimento = new DateTime(2000, 01, 01);
-            var pacienteTeste = new Paciente("16329868093", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", Nascimento);
+            var pacienteTeste = new Paciente("16329868093", "xxxxxxxxxxxxxxxxxxxxx", Nascimento);
 
             ListaPacientes.AdicionarNaLista(pacienteTeste);
 
             ListaPacientes.ListarPacientesPorCPF();
+
+            var data = new DateTime(2023, 01, 15);
+            var data1 = new DateTime(2023, 01, 14);
+
+            var inicio = new TimeSpan(12, 0, 0);
+            var inicio1 = new TimeSpan(11, 0, 0);
+
+            var fim = new TimeSpan(15, 0, 0);
+            var consulta = new Agendamento(data, inicio, fim, pacienteTeste);
+            var consulta1 = new Agendamento(data1, inicio, fim, pacienteTeste);
+            var consulta2 = new Agendamento(data, inicio1, fim, pacienteTeste);
+
+            ListaAgendamento.AdicionarNaLista(consulta);
+            ListaAgendamento.AdicionarNaLista(consulta1);
+            ListaAgendamento.AdicionarNaLista(consulta2);
+
+            //ListaAgendamento.ListarAgendaToda();
             MenuPrincipal();
         }
         private void MenuPrincipal()
@@ -87,9 +103,6 @@ namespace Odonto.Controlador
             switch (PacienteForm.MenuAgenda())
             {
                 case "1":
-                    //ToDo: após cadastrar uma consulta, a opcao retornar ao menu principal e depois Fim, não encerra
-                    //o processo na primeira vez, apenas ao inserir novamente a opcao Fim
-                    Console.WriteLine("//1 - Agendar consulta");
                     AgendarConsulta();
                     break;
                 case "2":
@@ -97,7 +110,6 @@ namespace Odonto.Controlador
                     break;
                 case "3":
                     MenuListarAgenda();
-                    Console.WriteLine("//3 - Listar agenda");
                     break;
                 case "4":
                     return;
@@ -108,13 +120,38 @@ namespace Odonto.Controlador
         private void AgendarConsulta()
         {
             SolicitarCPFAgenda();
-
-            // Enquanto DataConsulta e Hora Inicial não forem válidas solicitar os mesmos
-            SolicitarDataConsulta();
-            SolicitarHoraInicio();
-            SolicitarHoraFim();
+            SolicitarDataHoraConsulta();
 
             Console.WriteLine("Agendamento realizado com sucesso!");
+        }
+        public void SolicitarDataHoraConsulta()
+        {
+            try
+            {
+                AgendaForm.SolicitarDataConsulta();
+                AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
+
+                // Todo: e se não houver nenhum horário disponível para a data escolhida? Nunca vai sair do loop
+                bool isValidHora = false;
+                do
+                {
+                    SolicitarHoraInicio();
+                    SolicitarHoraFim();
+                    isValidHora = AgendaValidador.IsHorarioDisponivelInicio(AgendaValidador.Agendamento.HoraInicio, AgendaValidador.Agendamento.HoraFim, ListaAgendamento.Agendamentos);
+
+                } while (!isValidHora);
+
+                // Agendar Consulta para o Paciente
+                var auxiliarConsulta = AgendaValidador.Agendamento;
+                var consulta = new Agendamento(auxiliarConsulta, ListaPacientes.Pacientes[auxiliarConsulta.Paciente.CPF]);
+                ListaAgendamento.AdicionarNaLista(consulta);
+                ListaPacientes.Pacientes[auxiliarConsulta.Paciente.CPF].AdicionarConsulta(consulta);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                SolicitarDataHoraConsulta();
+            }
         }
 
         private void MenuListarAgenda()
@@ -123,6 +160,7 @@ namespace Odonto.Controlador
             {
                 case "1":
                     Console.WriteLine("//1 - Listar toda agenda");
+                    ListaAgendamento.ListarAgendaToda();
                     break;
                 case "2":
                     Console.WriteLine("//2 - Listar agenda periodo");
@@ -139,7 +177,9 @@ namespace Odonto.Controlador
             SolicitarCPF();
             SolicitarNome();
             SolicitarNascimento();
-            ListaPacientes.AdicionarNaLista(PacienteForm);
+            var Paciente = new Paciente(Validador.Paciente.CPF, Validador.Paciente.Nome, Validador.Paciente.Nascimento);
+
+            ListaPacientes.AdicionarNaLista(Paciente);
 
             Console.WriteLine("Paciente cadastrado com sucesso!");
         }
@@ -154,9 +194,6 @@ namespace Odonto.Controlador
 
             } while (!isValid);
         }
-
-
-
         private void SolicitarNome()
         {
             // Nome
@@ -188,42 +225,32 @@ namespace Odonto.Controlador
 
             } while (!isValid);
         }
-        public void SolicitarDataHoraConsulta()
-        {
+        //private void SolicitarDataConsulta()
+        //{
+        //    // Data de Consulta
+        //    do
+        //    {
+        //        AgendaForm.SolicitarDataConsulta();
+        //        isValid = AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
 
-        }
-        private void SolicitarDataConsulta()
+        //    } while (!isValid);
+        //}
+        private void SolicitarHoraInicio()
         {
-            // Data de Consulta (Não é possível validar a data sem a hora de início da consulta)
-            do
-            {
-                AgendaForm.SolicitarDataConsulta();
-                isValid = AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
-
-            } while (!isValid);
-        }
-        private bool SolicitarHoraInicio()
-        {
-            bool isValidHora = false;
-            TimeSpan ultimoAgendamento = new TimeSpan(18, 45, 0);
             // Hora Inicio Consulta
             do
             {
                 AgendaForm.SolicitarHoraInicio();
-                //if (AgendaForm.Inicio > )
+                isValid = AgendaValidador.IsValidHoraInicio(AgendaForm.Inicio);
 
-                isValidHora = AgendaValidador.IsValidHoraInicio(AgendaForm.Inicio);
-
-
-            } while (!isValidHora);
-            return isValidHora;
+            } while (!isValid);
         }
         private void SolicitarHoraFim()
         {
             // Hora Fim Consulta
             do
             {
-                //AgendaForm.SolicitarHoraFim();
+                AgendaForm.SolicitarHoraFim();
                 isValid = AgendaValidador.IsValidHoraFim(AgendaForm.Fim);
 
             } while (!isValid);

@@ -51,6 +51,7 @@
     <Compile Include="Agenda\CamposAgenda.cs" />
     <Compile Include="GeralControlador.cs" />
     <Compile Include="GeralExtensions.cs" />
+    <Compile Include="Intervalo.cs" />
     <Compile Include="Paciente\PacienteExtensions.cs" />
     <Compile Include="Paciente\CamposPaciente.cs" />
     <Compile Include="Paciente\ListaPacientes.cs" />

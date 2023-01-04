@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using Odonto;
-
 
 namespace Odonto.Extensions
 {
@@ -136,26 +132,36 @@ namespace Odonto.Extensions
         public static void ImprimeDicionarioOrdenado<TKey, TValor>(this Dictionary<TKey, TValor> dicionario, OrdenadoPor ordenado)
         {
             PacienteExtensions.CabecalhoListaPacientes();
-
             var DicionarioOrdenado = new List<KeyValuePair<TKey, TValor>>();
-
             switch (ordenado)
             {
                 case OrdenadoPor.CPF:
-                    DicionarioOrdenado = dicionario.OrderBy(paciente => paciente.Key).ToList();
+                    DicionarioOrdenado = dicionario.OrderBy(x => x.Key).ToList();
                     break;
-
                 case OrdenadoPor.Nome:
-
-                    DicionarioOrdenado = dicionario.OrderBy(paciente => paciente.Value).ToList();
+                    DicionarioOrdenado = dicionario.OrderBy(x => x.Value).ToList();
                     break;
             }
 
             for (int i = 0; i < DicionarioOrdenado.Count; i++)
             {
+                var item = DicionarioOrdenado[i].Value;
+
                 Console.WriteLine($"{DicionarioOrdenado[i].Value}");
             }
             DicionarioOrdenado.Count.RodapeListaPacientes();
+        }
+
+        public static void ImprimeListaOrdenada<TKey, TValor>(this SortedList<TKey, TValor> lista)
+        {
+            AgendaExtensions.CabecalhoListaAgenda();
+
+            foreach (var item in lista)
+            {
+                Console.WriteLine($"{item.Value}");
+            }
+
+            AgendaExtensions.RodapeListaAgenda();
         }
 
         public static bool EncerrarProcessoComErro(this Exception ex)
@@ -164,39 +170,37 @@ namespace Odonto.Extensions
             return false;
         }
 
+        public static bool TemIntersecao(this Intervalo intervalo, Intervalo outroIntervalo)
+        {
+            //https://stackoverflow.com/questions/13513932/algorithm-to-detect-overlapping-periods
+            return intervalo.DataHoraInicial < outroIntervalo.DataHoraFinal && outroIntervalo.DataHoraInicial < intervalo.DataHoraFinal;
+        }
+
         public static DateTime VerificaData(this string data)
         {
             if (!DateTime.TryParseExact(data, "ddMMyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime consulta))
-                throw new Exception("Erro: data deve estar no formato ddMMaaaa");
+                throw new Exception("Data deve estar no formato ddMMaaaa");
 
             return consulta;
         }
-
         public static DateTime VerificaHora(this string hora)
         {
             if (!DateTime.TryParseExact(hora, "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime horario))
-                throw new Exception("Erro: o formato de hora deve estar em HHmm");
+                throw new Exception("Erro: O formato de hora deve estar em HHmm");
+            // Todo: Verificar se As horas inicial e final são definidas sempre de 15 em 15 minutos.
+            var Minutos = horario.TimeOfDay.Minutes;
+
+            if (Minutos != 0 && Minutos % 15 != 0)
+                throw new Exception("Erro: Os minutos devem ser de 15 em 15 minutos");
 
             return horario;
         }
-        //public static void MostrarErros<TCampo>(this IValidador<TCampo> validador)
-        //{
-        //    if (!validador.Erros.IsEmpty)
-        //    {
-        //        Console.WriteLine("\n---------------------------- ERROS ---------------------------");
-
-        //        // Percorre cada item do Enumerável
-        //        foreach (TCampo campo in Enum.GetValues(typeof(TCampo)))
-        //        {
-        //            var msg = validador.Erros.GetErrorMessage(campo);
-
-        //            if (msg.Length > 0)
-        //                Console.WriteLine("{0}: {1}", campo.ToString(), msg);
-        //        }
-
-        //        Console.WriteLine("--------------------------------------------------------------");
-        //    }
-        //}
-
+        //Ref: https://stackoverflow.com/questions/17590528/pad-left-pad-right-pad-center-string
+        public static string PadCenter(this string str, int length)
+        {
+            int spaces = length - str.Length;
+            int padLeft = spaces / 2 + str.Length;
+            return str.PadLeft(padLeft).PadRight(length);
+        }
     }
 }

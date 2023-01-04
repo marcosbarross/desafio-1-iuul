@@ -1,10 +1,6 @@
 ﻿using Odonto.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Odonto
 {
@@ -31,6 +27,8 @@ namespace Odonto
                 nome = nome.Trim();
                 if (nome.Length < 5)
                     throw new Exception("Nome deve ter ao menos 5 letras");
+
+                Paciente.Nome = nome;
             }
             catch (Exception ex)
             {
