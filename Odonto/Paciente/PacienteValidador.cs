@@ -27,6 +27,8 @@ namespace Odonto
                 nome = nome.Trim();
                 if (nome.Length < 5)
                     throw new Exception("Nome deve ter ao menos 5 letras");
+
+                Paciente.Nome = nome;
             }
             catch (Exception ex)
             {
