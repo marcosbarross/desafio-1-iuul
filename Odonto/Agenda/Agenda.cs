@@ -21,8 +21,19 @@ namespace Odonto
         }
         public void AdicionarNaLista(Agendamento agendamento)
         {
-            var chave = agendamento.DataConsulta.Date + agendamento.HoraInicio;
-            Agendamentos.Add(chave, agendamento);
+            Agendamentos.Add(ChaveAgendamento(agendamento), agendamento);
+        }
+        public void RemoverDaLista(Agendamento agendamento)
+        {
+            Agendamentos.Remove(ChaveAgendamento(agendamento));
+        }
+        public int IndexElementoLista(Agendamento agendamento)
+        {
+            return Agendamentos.IndexOfKey(ChaveAgendamento(agendamento));
+        }
+        private DateTime ChaveAgendamento(Agendamento agendamento)
+        {
+            return agendamento.DataConsulta.Date + agendamento.HoraInicio;
         }
         public void ListarAgendaToda()
         {
