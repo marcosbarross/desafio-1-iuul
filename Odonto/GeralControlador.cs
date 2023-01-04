@@ -24,7 +24,7 @@ namespace Odonto.Controlador
 
             Validador = new PacienteValidador();
             ListaPacientes = new ListaPacientes();
-            
+
 
             ListaAgendamento = new Agenda();
 
@@ -108,6 +108,8 @@ namespace Odonto.Controlador
         private void AgendarConsulta()
         {
             SolicitarCPFAgenda();
+
+            // Enquanto DataConsulta e Hora Inicial não forem válidas solicitar os mesmos
             SolicitarDataConsulta();
             SolicitarHoraInicio();
             SolicitarHoraFim();
@@ -186,9 +188,13 @@ namespace Odonto.Controlador
 
             } while (!isValid);
         }
+        public void SolicitarDataHoraConsulta()
+        {
+
+        }
         private void SolicitarDataConsulta()
         {
-            // Data de Consulta
+            // Data de Consulta (Não é possível validar a data sem a hora de início da consulta)
             do
             {
                 AgendaForm.SolicitarDataConsulta();
@@ -196,15 +202,21 @@ namespace Odonto.Controlador
 
             } while (!isValid);
         }
-        private void SolicitarHoraInicio()
+        private bool SolicitarHoraInicio()
         {
+            bool isValidHora = false;
+            TimeSpan ultimoAgendamento = new TimeSpan(18, 45, 0);
             // Hora Inicio Consulta
             do
             {
-                //AgendaForm.SolicitarHoraInicio();
-                isValid = AgendaValidador.IsValidHoraInicio(AgendaForm.Inicio);
+                AgendaForm.SolicitarHoraInicio();
+                //if (AgendaForm.Inicio > )
 
-            } while (!isValid);
+                isValidHora = AgendaValidador.IsValidHoraInicio(AgendaForm.Inicio);
+
+
+            } while (!isValidHora);
+            return isValidHora;
         }
         private void SolicitarHoraFim()
         {

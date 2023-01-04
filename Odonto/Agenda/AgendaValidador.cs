@@ -29,12 +29,19 @@ namespace Odonto
             {
                 // Data de Consulta
                 Agendamento.DataConsulta = strConsulta.VerificaData();
+
+                if (Agendamento.DataConsulta.Date < DateTime.Today.Date)
+                    throw new Exception("Erro: data da consulta não deve ser menor que a data de hoje");
             }
             catch (Exception ex)
             {
                 return ex.EncerrarProcessoComErro();
             }
             return true;
+        }
+        public bool IsValidDataHoraConsulta(string dataHoraConsulta)
+        {
+
         }
         public bool IsValidHoraInicio(string strInicio)
         {

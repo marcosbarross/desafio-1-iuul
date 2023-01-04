@@ -136,9 +136,9 @@ namespace Odonto.Extensions
         public static void ImprimeDicionarioOrdenado<TKey, TValor>(this Dictionary<TKey, TValor> dicionario, OrdenadoPor ordenado)
         {
             PacienteExtensions.CabecalhoListaPacientes();
-            
+
             var DicionarioOrdenado = new List<KeyValuePair<TKey, TValor>>();
-            
+
             switch (ordenado)
             {
                 case OrdenadoPor.CPF:
@@ -167,15 +167,15 @@ namespace Odonto.Extensions
         public static DateTime VerificaData(this string data)
         {
             if (!DateTime.TryParseExact(data, "ddMMyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime consulta))
-                throw new Exception("Data deve estar no formato ddMMaaaa");
+                throw new Exception("Erro: data deve estar no formato ddMMaaaa");
 
             return consulta;
         }
-        
+
         public static DateTime VerificaHora(this string hora)
         {
             if (!DateTime.TryParseExact(hora, "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime horario))
-                throw new Exception("O formato de hora deve estar em HHmm");
+                throw new Exception("Erro: o formato de hora deve estar em HHmm");
 
             return horario;
         }
