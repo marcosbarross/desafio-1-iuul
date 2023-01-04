@@ -24,6 +24,7 @@ namespace Odonto.Controlador
 
             Validador = new PacienteValidador();
             ListaPacientes = new ListaPacientes();
+            
 
             ListaAgendamento = new Agenda();
 
@@ -136,6 +137,7 @@ namespace Odonto.Controlador
             SolicitarCPF();
             SolicitarNome();
             SolicitarNascimento();
+            ListaPacientes.AdicionarNaLista(PacienteForm);
 
             Console.WriteLine("Paciente cadastrado com sucesso!");
         }
@@ -150,6 +152,9 @@ namespace Odonto.Controlador
 
             } while (!isValid);
         }
+
+
+
         private void SolicitarNome()
         {
             // Nome
@@ -196,7 +201,7 @@ namespace Odonto.Controlador
             // Hora Inicio Consulta
             do
             {
-                AgendaForm.SolicitarHoraInicio();
+                //AgendaForm.SolicitarHoraInicio();
                 isValid = AgendaValidador.IsValidHoraInicio(AgendaForm.Inicio);
 
             } while (!isValid);
@@ -206,7 +211,7 @@ namespace Odonto.Controlador
             // Hora Fim Consulta
             do
             {
-                AgendaForm.SolicitarHoraFim();
+                //AgendaForm.SolicitarHoraFim();
                 isValid = AgendaValidador.IsValidHoraFim(AgendaForm.Fim);
 
             } while (!isValid);

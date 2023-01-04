@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using Odonto;
 
 
@@ -135,14 +136,18 @@ namespace Odonto.Extensions
         public static void ImprimeDicionarioOrdenado<TKey, TValor>(this Dictionary<TKey, TValor> dicionario, OrdenadoPor ordenado)
         {
             PacienteExtensions.CabecalhoListaPacientes();
+            
             var DicionarioOrdenado = new List<KeyValuePair<TKey, TValor>>();
+            
             switch (ordenado)
             {
                 case OrdenadoPor.CPF:
-                    DicionarioOrdenado = dicionario.OrderBy(x => x.Key).ToList();
+                    DicionarioOrdenado = dicionario.OrderBy(paciente => paciente.Key).ToList();
                     break;
+
                 case OrdenadoPor.Nome:
-                    DicionarioOrdenado = dicionario.OrderBy(x => x.Value).ToList();
+
+                    DicionarioOrdenado = dicionario.OrderBy(paciente => paciente.Value).ToList();
                     break;
             }
 
@@ -166,6 +171,7 @@ namespace Odonto.Extensions
 
             return consulta;
         }
+        
         public static DateTime VerificaHora(this string hora)
         {
             if (!DateTime.TryParseExact(hora, "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime horario))

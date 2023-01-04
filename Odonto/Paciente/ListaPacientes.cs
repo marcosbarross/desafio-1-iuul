@@ -21,10 +21,17 @@ namespace Odonto
         {
             Pacientes.Add(paciente.CPF, paciente);
         }
-
+        
         public void RemoverDaLista(string pacienteCPF)
         {
-            Pacientes.Remove(pacienteCPF);
+            try
+            {
+                Pacientes.Remove(pacienteCPF);
+            }
+            catch
+            {
+                
+            }
         }
 
         public void ListarPacientesPorCPF()
@@ -33,6 +40,7 @@ namespace Odonto
         }
         public void ListarPacientesPorNome()
         {
+            Pacientes.OrderBy(p => p.Value.Nome);
             Pacientes.ImprimeDicionarioOrdenado(OrdenadoPor.Nome);
         }
 

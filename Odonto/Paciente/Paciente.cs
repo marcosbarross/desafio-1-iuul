@@ -22,6 +22,7 @@ namespace Odonto
             CPF = _cpf;
             Nome = _nome;
             Nascimento = _nascimento;
+            
             Idade = Nascimento.Idade();
         }
         public string CPF { get; set; }

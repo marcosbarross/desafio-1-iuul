@@ -13,9 +13,22 @@ namespace Odonto
         {
             Agendamentos = new SortedList<DateTime, Agendamento>();
         }
+
+        public dictionario<string, Agendamento> Agendamentos { get; private set; }
+        
+        /*
         public void AgendarConsulta(string CPF, TimeSpan diaConsulta, TimeSpan inicioConsulta, TimeSpan fimConsulta)
         {
-
+            if (diaConsulta < DateTime.Now.TimeOfDay) 
+            { 
+                throw new Exception("Data da consulta deve ser maior que a data atual"); 
+            }
+ 
+            else
+            {
+                Agendamentos.Add(diaConsulta, diaConsulta, inicioConsulta, fimConsulta);
+            }
         }
+        */
     }
 }
