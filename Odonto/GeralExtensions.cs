@@ -145,6 +145,8 @@ namespace Odonto.Extensions
 
             for (int i = 0; i < DicionarioOrdenado.Count; i++)
             {
+                var item = DicionarioOrdenado[i].Value;
+
                 Console.WriteLine($"{DicionarioOrdenado[i].Value}");
             }
             DicionarioOrdenado.Count.RodapeListaPacientes();
@@ -168,6 +170,12 @@ namespace Odonto.Extensions
             return false;
         }
 
+        public static bool TemIntersecao(this Intervalo intervalo, Intervalo outroIntervalo)
+        {
+            //https://stackoverflow.com/questions/13513932/algorithm-to-detect-overlapping-periods
+            return intervalo.DataHoraInicial < outroIntervalo.DataHoraFinal && outroIntervalo.DataHoraInicial < intervalo.DataHoraFinal;
+        }
+
         public static DateTime VerificaData(this string data)
         {
             if (!DateTime.TryParseExact(data, "ddMMyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime consulta))
@@ -178,7 +186,12 @@ namespace Odonto.Extensions
         public static DateTime VerificaHora(this string hora)
         {
             if (!DateTime.TryParseExact(hora, "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime horario))
-                throw new Exception("O formato de hora deve estar em HHmm");
+                throw new Exception("Erro: O formato de hora deve estar em HHmm");
+            // Todo: Verificar se As horas inicial e final são definidas sempre de 15 em 15 minutos.
+            var Minutos = horario.TimeOfDay.Minutes;
+
+            if (Minutos != 0 && Minutos % 15 != 0)
+                throw new Exception("Erro: Os minutos devem ser de 15 em 15 minutos");
 
             return horario;
         }

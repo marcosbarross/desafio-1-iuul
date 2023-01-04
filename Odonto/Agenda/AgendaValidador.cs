@@ -36,12 +36,28 @@ namespace Odonto
         /// </summary>
         /// <param name="strConsulta">Representa o valor da data de consulta informada.</param>
         /// <returns>Retorna um valor verdadeiro se a data de consulta for válida.</returns>
-        public bool IsValidDataConsulta(string strConsulta)
+        public void IsValidDataConsulta(string strConsulta)
+        {
+            // Data de Consulta
+            Agendamento.DataConsulta = strConsulta.VerificaData();
+            if (Agendamento.DataConsulta.Date < DateTime.Now.Date)
+                throw new Exception("Erro: data da consulta não deve ser menor que a data de hoje");
+        }
+        /// <summary>
+        /// Faz as validações necessárias para o horário de início da consulta.
+        /// </summary>
+        /// <param name="strInicio">Representa o valor da hora de início da consulta.</param>
+        /// <returns>Retorna um valor verdadeiro se a hora de início for válida.</returns>
+
+
+        public bool IsValidHoraInicio(string strInicio)
         {
             try
             {
                 // Data de Consulta
-                Agendamento.DataConsulta = strConsulta.VerificaData();
+                Agendamento.HoraInicio = strInicio.VerificaHora().TimeOfDay;
+                if (Agendamento.HoraInicio <= DateTime.Now.TimeOfDay)
+                    throw new Exception("Erro: Hora da consulta deve ser maior que a hora atual");
             }
             catch (Exception ex)
             {
@@ -50,21 +66,32 @@ namespace Odonto
             return true;
         }
         /// <summary>
-        /// Faz as validações necessárias para o horário de início da consulta.
+        /// Valida se há horário disponível na data de consulta escolhida
         /// </summary>
-        /// <param name="strInicio">Representa o valor da hora de início da consulta.</param>
-        /// <returns>Retorna um valor verdadeiro se a hora de início for válida.</returns>
-        public bool IsValidHoraInicio(string strInicio)
+        /// <param name="inicio"></param>
+        /// <param name="agendamentos"></param>
+        /// <returns></returns>
+        public bool IsHorarioDisponivelInicio(TimeSpan inicio, TimeSpan fim, SortedList<DateTime, Agendamento> agendamentos)
         {
-            try
+            var consultaData = Agendamento.DataConsulta.Date;
+            var periodoAgendado = new Intervalo(consultaData + inicio, consultaData + fim);
+
+            // Obtem uma lista com todos os agendamentos
+            var values = agendamentos.Values;
+
+            // Filtra apenas por agendamento para a data de consulta desejada
+            var query = values.Where(n => n.DataConsulta.Date == consultaData);
+
+            foreach (var item in query)
             {
-                // Data de Consulta
-                Agendamento.HoraInicio = strInicio.VerificaHora().TimeOfDay;
+                var itemConsultaData = item.DataConsulta.Date;
+                var periodoExistente = new Intervalo(itemConsultaData + item.HoraInicio, itemConsultaData + item.HoraFim);
+
+                if (periodoAgendado.TemIntersecao(periodoExistente))
+                    return false;
             }
-            catch (Exception ex)
-            {
-                return ex.EncerrarProcessoComErro();
-            }
+            // Melhorias: Buscar todos os agendamentos para a data da consulta marcada
+            // Verificar se entre esses agendamentos existe sopreposição de consultas
             return true;
         }
         /// <summary>

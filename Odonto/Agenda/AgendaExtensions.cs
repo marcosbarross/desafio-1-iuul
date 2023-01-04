@@ -7,15 +7,6 @@ namespace Odonto.Extensions
     /// </summary>
     public static class AgendaExtensions
     {
-        public static string ValoresAgenda(this Agendamento agendamento)
-        {
-            return agendamento.DataConsulta.ToShortDateString().PadCenter((int)EspacosAgenda.Data) +
-                   agendamento.HoraInicio.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
-                   agendamento.HoraFim.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
-                   agendamento.Tempo.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
-                   agendamento.Nome.ToString().PadRight((int)EspacosAgenda.Nome) +
-                   agendamento.Nascimento.ToShortDateString().PadCenter((int)EspacosAgenda.Data);
-        }
         public static void CabecalhoListaAgenda()
         {
             Console.WriteLine("-------------------------------------------------------------");

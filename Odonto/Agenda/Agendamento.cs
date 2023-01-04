@@ -40,9 +40,27 @@ namespace Odonto
             Nome = Paciente.Nome;
             Nascimento = Paciente.Nascimento;
         }
+        public Agendamento(Agendamento agendamento, Paciente paciente)
+        {
+            DataConsulta = agendamento.DataConsulta.Date + agendamento.HoraInicio;
+
+            HoraInicio = agendamento.HoraInicio;
+            HoraFim = agendamento.HoraFim;
+
+            Paciente = paciente;
+            Tempo = HoraFim.Subtract(HoraInicio);
+
+            Nome = Paciente.Nome;
+            Nascimento = Paciente.Nascimento;
+        }
         public override string ToString()
         {
-            return this.ValoresAgenda();
+            return DataConsulta.ToShortDateString().PadCenter((int)EspacosAgenda.Data) +
+                   HoraInicio.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
+                   HoraFim.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
+                   Tempo.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
+                   Nome.ToString().PadRight((int)EspacosAgenda.Nome) +
+                   Nascimento.ToShortDateString().PadCenter((int)EspacosAgenda.Data);
         }
     }
 }

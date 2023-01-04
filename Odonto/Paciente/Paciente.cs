@@ -23,84 +23,40 @@ namespace Odonto
             Nome = _nome;
             Nascimento = _nascimento;
             Idade = Nascimento.Idade();
+            //Consulta = new Agendamento();
         }
         public string CPF { get; set; }
         public string Nome { get; set; }
         public DateTime Nascimento { get; set; }
         public int Idade { get; }
+        public Agendamento Consulta { get; private set; }
         /// <summary>
         /// Sobreescreve o método ToString para fornecer a saída desejada.
         /// </summary>
         /// <returns>Retorna uma sequência de valores de texto, de uma instância de Paciente, de acordo com os requisitos do projeto.</returns>
         public override string ToString()
         {
-            return CPF.ToString().PadRight((int)Espacos.CPF) +
+            var saida = CPF.ToString().PadRight((int)Espacos.CPF) +
                    Nome.ToString().PadRight((int)Espacos.Nome) +
                    Nascimento.ToShortDateString().PadRight((int)Espacos.Nascimento) +
                    Idade.ToString().PadLeft((int)Espacos.Idade);
+
+            if (Consulta != null)
+            {
+                saida += "\n" + "".PadRight((int)Espacos.CPF) +
+                         $"Agendado para: {Consulta.DataConsulta.ToShortDateString()}".PadRight((int)Espacos.Nome) +
+                         "".PadRight((int)Espacos.Nascimento) +
+                         "".PadLeft((int)Espacos.Idade) +
+                         "\n" + "".PadRight((int)Espacos.CPF) +
+                         $"{Consulta.HoraInicio:hh\\:mm} às {Consulta.HoraFim:hh\\:mm}".PadRight((int)Espacos.Nome) +
+                         "".PadRight((int)Espacos.Nascimento) +
+                         "".PadLeft((int)Espacos.Idade);
+            }
+            return saida;
         }
-        //public Paciente(long _cpf, String _nome, String _nascimento) 
-        //{
-        //    try
-        //    {
-        //        if (IsValidCPF(_cpf))
-        //        {
-        //            CPF = _cpf;
-        //        }
-        //        else { throw new InvalidOperationException(); }
-        //    }
-
-        //    catch (InvalidOperationException)
-        //    {
-        //        Console.WriteLine("CPF INVÁLIDO!");
-        //    }
-        //    try
-        //    {
-        //        if (_nome.Length < 5)
-        //        {
-        //            throw new FormatException();
-        //        }
-
-        //        else
-        //        {
-        //            Nome = _nome;
-        //        }
-        //    }
-        //    catch (FormatException)
-        //    {
-        //        Console.WriteLine("Formato de nome não aceito! É preciso ter mais de 5 caracteres");
-        //    }
-        //    try
-        //    {
-        //        DateTime data = DateTime.Now;
-        //        string Dia = _nascimento.Substring(0, 2);
-        //        string Mes = _nascimento.Substring(3, 2);
-        //        string Ano = _nascimento.Substring(6, 4);
-        //        idade = data.Year - Convert.ToInt32(Ano);
-
-        //        if (_nascimento.Length == 10 && _nascimento.Contains("/") && idade > 13)
-        //        {
-
-        //            Nascimento = _nascimento;
-        //        }
-        //        else if (idade < 13)
-        //        {
-        //            throw new ArgumentOutOfRangeException();
-        //        }
-        //        else
-        //        {
-        //            throw new FormatException();
-        //        }
-        //    }
-        //    catch (FormatException)
-        //    {
-        //        Console.WriteLine("Formato de data não aceito!");
-        //    }
-        //    catch (ArgumentOutOfRangeException)
-        //    {
-        //        Console.WriteLine("Paciente menor que 13 anos!");
-        //    }
-
-        //}
+        public void AdicionarConsulta(Agendamento _consulta)
+        {
+            Consulta = _consulta;
+        }
     }
 }
