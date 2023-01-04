@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Odonto.Extensions
 {
@@ -20,12 +22,9 @@ namespace Odonto.Extensions
             Console.WriteLine("Idade".PadLeft((int)Espacos.Idade));
             Console.WriteLine("------------------------------------------------------------");
         }
-        public static void RodapeListaPacientes(this int Index)
+        public static void RodapeListaPacientes()
         {
-            Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine(" ");
-            Console.WriteLine($"{Index} pacientes cadastrados!");
-            Console.WriteLine(" ");
+            Console.WriteLine("------------------------------------------------------------\n");
         }
     }
 }

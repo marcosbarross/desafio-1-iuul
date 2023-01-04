@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Odonto.Controlador
 {
@@ -33,28 +34,39 @@ namespace Odonto.Controlador
         public void Inicia()
         {
             DateTime Nascimento = new DateTime(2000, 01, 01);
-            var pacienteTeste = new Paciente("16329868093", "xxxxxxxxxxxxxxxxxxxxx", Nascimento);
+            var pacienteTeste = new Paciente("16329868093", "Lucas da Silva", Nascimento);
+            var pacienteTeste1 = new Paciente("79405414046", "Ana de Lima", Nascimento);
+            var pacienteTeste2 = new Paciente("44704062015", "Lucas de Lima", Nascimento);
+
 
             ListaPacientes.AdicionarNaLista(pacienteTeste);
-
-            ListaPacientes.ListarPacientesPorCPF();
+            ListaPacientes.AdicionarNaLista(pacienteTeste1);
+            ListaPacientes.AdicionarNaLista(pacienteTeste2);
 
             var data = new DateTime(2023, 01, 15);
             var data1 = new DateTime(2023, 01, 14);
+            var data2 = new DateTime(2023, 01, 13);
+
 
             var inicio = new TimeSpan(12, 0, 0);
             var inicio1 = new TimeSpan(11, 0, 0);
 
             var fim = new TimeSpan(15, 0, 0);
             var consulta = new Agendamento(data, inicio, fim, pacienteTeste);
-            var consulta1 = new Agendamento(data1, inicio, fim, pacienteTeste);
-            var consulta2 = new Agendamento(data, inicio1, fim, pacienteTeste);
+            var consulta1 = new Agendamento(data1, inicio, fim, pacienteTeste1);
+            var consulta2 = new Agendamento(data2, inicio1, fim, pacienteTeste2);
 
             ListaAgendamento.AdicionarNaLista(consulta);
             ListaAgendamento.AdicionarNaLista(consulta1);
             ListaAgendamento.AdicionarNaLista(consulta2);
 
+            ListaPacientes.Pacientes[pacienteTeste.CPF].AdicionarConsulta(consulta);
+            ListaPacientes.Pacientes[pacienteTeste1.CPF].AdicionarConsulta(consulta1);
+            ListaPacientes.Pacientes[pacienteTeste2.CPF].AdicionarConsulta(consulta2);
+
             //ListaAgendamento.ListarAgendaToda();
+            ListaPacientes.ListarPacientesPorNome();
+
             MenuPrincipal();
         }
         private void MenuPrincipal()
@@ -82,15 +94,12 @@ namespace Odonto.Controlador
                     CadastrarNovoPaciente();
                     break;
                 case "2":
-                    Console.WriteLine("//2 - Excluir paciente");
                     ExcluirPacienteCadastrado();
                     break;
                 case "3":
-                    Console.WriteLine("//3 - Listar pacientes(ordenado por CPF)");
                     ListaPacientes.ListarPacientesPorCPF();
                     break;
                 case "4":
-                    Console.WriteLine("//4 - Listar pacientes(ordenado por nome)");
                     ListaPacientes.ListarPacientesPorNome();
                     break;
                 case "5":
@@ -106,7 +115,7 @@ namespace Odonto.Controlador
                     AgendarConsulta();
                     break;
                 case "2":
-                    Console.WriteLine("//2 - Cancelar agendamento");
+                    Console.WriteLine("//2 - Cancelar agendamento (NotImplemented)");
                     break;
                 case "3":
                     MenuListarAgenda();
@@ -124,35 +133,6 @@ namespace Odonto.Controlador
 
             Console.WriteLine("Agendamento realizado com sucesso!");
         }
-        public void SolicitarDataHoraConsulta()
-        {
-            try
-            {
-                AgendaForm.SolicitarDataConsulta();
-                AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
-
-                // Todo: e se não houver nenhum horário disponível para a data escolhida? Nunca vai sair do loop
-                bool isValidHora = false;
-                do
-                {
-                    SolicitarHoraInicio();
-                    SolicitarHoraFim();
-                    isValidHora = AgendaValidador.IsHorarioDisponivelInicio(AgendaValidador.Agendamento.HoraInicio, AgendaValidador.Agendamento.HoraFim, ListaAgendamento.Agendamentos);
-
-                } while (!isValidHora);
-
-                // Agendar Consulta para o Paciente
-                var auxiliarConsulta = AgendaValidador.Agendamento;
-                var consulta = new Agendamento(auxiliarConsulta, ListaPacientes.Pacientes[auxiliarConsulta.Paciente.CPF]);
-                ListaAgendamento.AdicionarNaLista(consulta);
-                ListaPacientes.Pacientes[auxiliarConsulta.Paciente.CPF].AdicionarConsulta(consulta);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                SolicitarDataHoraConsulta();
-            }
-        }
 
         private void MenuListarAgenda()
         {
@@ -163,7 +143,7 @@ namespace Odonto.Controlador
                     ListaAgendamento.ListarAgendaToda();
                     break;
                 case "2":
-                    Console.WriteLine("//2 - Listar agenda periodo");
+                    Console.WriteLine("//2 - Listar agenda periodo (NotImplemented)");
                     break;
                 case "3":
                     return;
@@ -172,6 +152,7 @@ namespace Odonto.Controlador
             MenuListarAgenda();
         }
 
+        // Paciente
         private void CadastrarNovoPaciente()
         {
             SolicitarCPF();
@@ -183,7 +164,6 @@ namespace Odonto.Controlador
 
             Console.WriteLine("Paciente cadastrado com sucesso!");
         }
-
         private void SolicitarCPF()
         {
             // CPF
@@ -215,6 +195,7 @@ namespace Odonto.Controlador
             } while (!isValid);
         }
 
+        // Agenda
         private void SolicitarCPFAgenda()
         {
             // CPF
@@ -225,16 +206,37 @@ namespace Odonto.Controlador
 
             } while (!isValid);
         }
-        //private void SolicitarDataConsulta()
-        //{
-        //    // Data de Consulta
-        //    do
-        //    {
-        //        AgendaForm.SolicitarDataConsulta();
-        //        isValid = AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
+        private void SolicitarDataHoraConsulta()
+        {
+            try
+            {
+                AgendaForm.SolicitarDataConsulta();
+                AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
 
-        //    } while (!isValid);
-        //}
+                // Todo: e se não houver nenhum horário disponível para a data escolhida? Nunca vai sair do loop
+                bool isValidHora = false;
+                do
+                {
+                    SolicitarHoraInicio();
+                    if (AgendaValidador.Agendamento.HoraInicio != AgendaValidador.FechaAs)
+                        SolicitarHoraFim();
+
+                    isValidHora = AgendaValidador.IsHorarioDisponivelInicio(ListaAgendamento.Agendamentos);
+
+                } while (!isValidHora);
+
+                // Agendar Consulta para o Paciente
+                var auxiliarConsulta = AgendaValidador.Agendamento;
+                var consulta = new Agendamento(auxiliarConsulta, ListaPacientes.Pacientes[auxiliarConsulta.Paciente.CPF]);
+                ListaAgendamento.AdicionarNaLista(consulta);
+                ListaPacientes.Pacientes[auxiliarConsulta.Paciente.CPF].AdicionarConsulta(consulta);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                SolicitarDataHoraConsulta();
+            }
+        }
         private void SolicitarHoraInicio()
         {
             // Hora Inicio Consulta
@@ -257,28 +259,30 @@ namespace Odonto.Controlador
         }
         private void ExcluirPacienteCadastrado()
         {
-            SolicitarExclusaoCPF();
+            AgendaForm.SolicitarCPF();
+            isValid = AgendaValidador.CanDeleteCPF(AgendaForm.CPF, ListaPacientes.Pacientes, ListaAgendamento.Agendamentos);
 
             if (isValid)
             {
-                // TODO
-                // a. Um paciente com uma consulta agendada futura não pode ser excluído.
-                // b. Se o paciente tiver uma ou mais consultas agendadas passadas, ele pode ser excluído.
-                //    Nesse caso, os respectivos agendamentos também devem ser excluídos.
+                // Pega uma lista com todos os agendamentos
+                var values = ListaAgendamento.Agendamentos.Values;
 
-                ListaPacientes.RemoverDaLista(Validador.Paciente.CPF);
+                // Busca todos os agendamentos de um paciente
+                var query = values.Where(c => c.Paciente.CPF == AgendaForm.CPF);
+
+                // Se o paciente tiver uma ou mais consultas agendadas passadas, ele pode ser excluído.
+                if (query.Any())
+                {
+                    ListaPacientes.RemoverDaLista(AgendaForm.CPF);
+
+                    //Excluí os respectivos agendamentos.
+                    int[] IndexParaRemocao = new int[] { };
+                    foreach (var item in query.Reverse())
+                    {
+                        ListaAgendamento.RemoverDaLista(item);
+                    }
+                }
             }
-        }
-
-        private void SolicitarExclusaoCPF()
-        {
-            // Hora Fim Consulta
-            do
-            {
-                AgendaForm.SolicitarCPF();
-                isValid = AgendaValidador.CanDeleteCPF(AgendaForm.CPF, ListaPacientes.Pacientes, ListaAgendamento.Agendamentos);
-
-            } while (!isValid);
         }
     }
 }

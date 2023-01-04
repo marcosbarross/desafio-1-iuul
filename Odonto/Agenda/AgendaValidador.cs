@@ -14,11 +14,18 @@ namespace Odonto
     /// </summary>
     public class AgendaValidador
     {
+        readonly private TimeSpan is15Minutos;
         public Agendamento Agendamento { get; private set; }
+
+        public TimeSpan AbreAs { get; private set; }
+        public TimeSpan FechaAs { get; private set; }
 
         public AgendaValidador()
         {
             Agendamento = new Agendamento();
+            AbreAs = new TimeSpan(8, 0, 0);
+            FechaAs = new TimeSpan(18, 45, 0);
+            is15Minutos = new TimeSpan(0, 15, 0);
         }
         /// <summary>
         /// Faz as validações necessárias para o CPF informado.
@@ -55,9 +62,42 @@ namespace Odonto
             try
             {
                 // Data de Consulta
-                Agendamento.HoraInicio = strInicio.VerificaHora().TimeOfDay;
-                if (Agendamento.HoraInicio <= DateTime.Now.TimeOfDay)
+                Agendamento.HoraInicio = strInicio.VerificaHora();
+                if (Agendamento.HoraInicio < AbreAs)
+                    throw new Exception($"Erro: A clínica irá abrir apenas às {AbreAs:hh\\:mm}.");
+                if (Agendamento.HoraInicio > FechaAs)
+                    throw new Exception($"Erro: O último horário de início disponível é às {FechaAs:hh\\:mm}.");
+                else if (Agendamento.HoraInicio == FechaAs)
+                    Agendamento.HoraFim = FechaAs;
+
+                if (Agendamento.DataConsulta.Date == DateTime.Now.Date &&
+                Agendamento.HoraInicio <= DateTime.Now.TimeOfDay)
                     throw new Exception("Erro: Hora da consulta deve ser maior que a hora atual");
+            }
+            catch (Exception ex)
+            {
+                return ex.EncerrarProcessoComErro();
+            }
+            return true;
+        }
+        /// <summary>
+        /// Faz as validações necessárias para o horário de término da consulta.
+        /// </summary>
+        /// <param name="strFim">Representa o valor da hora de término da consulta.</param>
+        /// <returns>Retorna um valor verdadeiro se a hora de término for válida.</returns>
+        public bool IsValidHoraFim(string strFim)
+        {
+            try
+            {
+                // Data de Consulta
+                Agendamento.HoraFim = strFim.VerificaHora();
+
+                var horarioFechada = FechaAs.Add(is15Minutos);
+                if (Agendamento.HoraFim > horarioFechada)
+                    throw new Exception($"Erro: A clínica irá fechar às {horarioFechada:hh\\:mm}.");
+                if (Agendamento.HoraFim <= Agendamento.HoraInicio)
+                    throw new Exception($"Erro: O horário final da consulta deve ser maior que o inicial.");
+
             }
             catch (Exception ex)
             {
@@ -71,16 +111,19 @@ namespace Odonto
         /// <param name="inicio"></param>
         /// <param name="agendamentos"></param>
         /// <returns></returns>
-        public bool IsHorarioDisponivelInicio(TimeSpan inicio, TimeSpan fim, SortedList<DateTime, Agendamento> agendamentos)
+        public bool IsHorarioDisponivelInicio(SortedList<DateTime, Agendamento> agendamentos)
         {
+            var inicio = Agendamento.HoraInicio;
+            var fim = Agendamento.HoraFim;
             var consultaData = Agendamento.DataConsulta.Date;
             var periodoAgendado = new Intervalo(consultaData + inicio, consultaData + fim);
 
             // Obtem uma lista com todos os agendamentos
             var values = agendamentos.Values;
 
-            // Filtra apenas por agendamento para a data de consulta desejada
-            var query = values.Where(n => n.DataConsulta.Date == consultaData);
+            // Filtra apenas por agendamento para a data de consulta desejada, a partir do horario de inicio desejado
+            var query = values.Where(n => n.DataConsulta.Date == consultaData)
+                              .Where(h => h.HoraInicio >= inicio);
 
             foreach (var item in query)
             {
@@ -94,24 +137,7 @@ namespace Odonto
             // Verificar se entre esses agendamentos existe sopreposição de consultas
             return true;
         }
-        /// <summary>
-        /// Faz as validações necessárias para o horário de término da consulta.
-        /// </summary>
-        /// <param name="strInicio">Representa o valor da hora de término da consulta.</param>
-        /// <returns>Retorna um valor verdadeiro se a hora de término for válida.</returns>
-        public bool IsValidHoraFim(string strFim)
-        {
-            try
-            {
-                // Data de Consulta
-                Agendamento.HoraFim = strFim.VerificaHora().TimeOfDay;
-            }
-            catch (Exception ex)
-            {
-                return ex.EncerrarProcessoComErro();
-            }
-            return true;
-        }
+
         /// <summary>
         /// Faz as validações necessárias para exclusão de um paciente.
         /// </summary>
