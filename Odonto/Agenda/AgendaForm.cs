@@ -36,17 +36,73 @@ namespace Odonto
         public void SolicitarCPF()
         {
             Console.Write("CPF: ");
-            CPF = Console.ReadLine();
+            _CPF = Console.ReadLine();
         }
         public void SolicitarDataConsulta()
         {
-            Console.Write("Data da consulta (ddMMaaaa): ");
-            Consulta = Console.ReadLine();
+            string _consulta;
+            DateTime consulta;
+
+            try
+            {
+                Console.Write("Data da consulta (ddMMaaaa): ");
+                _consulta = Console.ReadLine();
+                string Dia = _consulta.Substring(0, 2);
+                string Mes = _consulta.Substring(2, 2);
+                string Ano = _consulta.Substring(4, 4);
+
+                consulta = new DateTime(Convert.ToInt32(Ano), Convert.ToInt32(Mes), Convert.ToInt32(Dia));
+
+                if (consulta < DateTime.Now)
+                {
+                    throw new ArgumentOutOfRangeException("Data da consulta deve ser maior que a data atual");
+                }
+
+
+                else if (consulta == DateTime.Now)
+                {
+                    TimeSpan inicio;
+
+                    inicio = new TimeSpan(Convert.ToInt32(Inicio));
+
+                    do
+                    {
+                        SolicitarHoraInicio();
+                        if (inicio < DateTime.Now.TimeOfDay)
+                            Console.WriteLine("Hora da consulta deve ser maior que a data atual");
+                        
+                    }
+
+                    while (inicio < DateTime.Now.TimeOfDay);
+
+                    /*
+                    if (inicio < DateTime.Now.TimeOfDay)
+                    {
+                        throw new ArgumentOutOfRangeException("Hora da consulta deve ser maior que a data atual");
+                    }
+                    */
+                }
+
+                else
+                {
+                    Consulta = _consulta;
+                    SolicitarHora();
+                    AdicionarMarcacao(CPF, Consulta, Inicio, Fim);
+                }
+
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine(("Data da consulta deve ser maior que a data atual"));
+                SolicitarDataConsulta();
+            }
+
+
         }
         public void SolicitarHoraInicio()
         {
             Console.Write("Hora inicial (HHmm): ");
-            Inicio = Console.ReadLine();
+            _Inicio = Console.ReadLine();
         }
         //public void SolicitarDataConsulta()
         //{

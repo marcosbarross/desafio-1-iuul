@@ -8,27 +8,35 @@ namespace Odonto
 {
     public class Agenda
     {
-        public SortedList<DateTime, Agendamento> Agendamentos { get; private set; }
+        public SortedList<string, > Agendamentos { get; private set; }
         public Agenda() 
         {
-            Agendamentos = new SortedList<DateTime, Agendamento>();
+            
         }
 
-        public dictionario<string, Agendamento> Agendamentos { get; private set; }
-        
-        /*
-        public void AgendarConsulta(string CPF, TimeSpan diaConsulta, TimeSpan inicioConsulta, TimeSpan fimConsulta)
+        public Dictionary<string, List<string>> Marcacoes = new Dictionary<string, List<string>>();
+
+        public void AdicionarMarcacao(string CPF, string Consulta, string Inicio, string Fim)
         {
-            if (diaConsulta < DateTime.Now.TimeOfDay) 
-            { 
-                throw new Exception("Data da consulta deve ser maior que a data atual"); 
-            }
- 
-            else
+            List<string> Agendamento = new List<string>();
+            Agendamento.Add(Consulta);
+            Agendamento.Add(Inicio);
+            Agendamento.Add(Fim);
+
+            Marcacoes.Add(CPF, Agendamento);
+        }
+        
+        public void ListarMarcacoes(string CPF)
+        {
+            for (int i = 0; i < Marcacoes.Count; i++)
             {
-                Agendamentos.Add(diaConsulta, diaConsulta, inicioConsulta, fimConsulta);
+                Console.WriteLine(Marcacoes[CPF]);
             }
         }
-        */
+
+        public void AgendarConsulta(string CPF, TimeSpan diaConsulta, TimeSpan inicioConsulta, TimeSpan fimConsulta)
+        {
+ 
+        }    
     }
 }
