@@ -13,11 +13,30 @@ namespace Odonto.Extensions
     {
         public static string ValoresAgenda(this Agendamento agendamento)
         {
-            //return paciente.CPF.ToString().PadRight((int)Espacos.CPF) +
-            //       paciente.Nome.ToString().PadRight((int)Espacos.Nome) +
-            //       paciente.Nascimento.ToShortDateString().PadRight((int)Espacos.Nascimento) +
-            //       paciente.Idade.ToString().PadLeft((int)Espacos.Idade);
-            return "";
+            return agendamento.DataConsulta.ToShortDateString().PadCenter((int)EspacosAgenda.Data) +
+                   agendamento.HoraInicio.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
+                   agendamento.HoraFim.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
+                   agendamento.Tempo.ToString(@"hh\:mm").PadCenter((int)EspacosAgenda.Tempo) +
+                   agendamento.Nome.ToString().PadRight((int)EspacosAgenda.Nome) +
+                   agendamento.Nascimento.ToShortDateString().PadCenter((int)EspacosAgenda.Data);
+        }
+        public static void CabecalhoListaAgenda()
+        {
+            Console.WriteLine("-------------------------------------------------------------");
+            Console.Write("Data".PadCenter((int)EspacosAgenda.Data));
+            Console.Write("H.Ini".PadCenter((int)EspacosAgenda.Tempo));
+            Console.Write("H.Fim".PadCenter((int)EspacosAgenda.Tempo));
+            Console.Write("Tempo".PadCenter((int)EspacosAgenda.Tempo));
+            Console.Write("Nome".PadRight((int)EspacosAgenda.Nome));
+            Console.WriteLine("Dt.Nasc.".PadCenter((int)EspacosAgenda.Data));
+
+
+            Console.WriteLine("-------------------------------------------------------------");
+        }
+        public static void RodapeListaAgenda()
+        {
+            Console.WriteLine("-------------------------------------------------------------");
+            Console.WriteLine(" ");
         }
     }
 }

@@ -33,11 +33,30 @@ namespace Odonto.Controlador
         public void Inicia()
         {
             DateTime Nascimento = new DateTime(2000, 01, 01);
-            var pacienteTeste = new Paciente("16329868093", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", Nascimento);
+            var pacienteTeste = new Paciente("16329868093", "xxxxxxxxxxxxxxxxxxxxx", Nascimento);
 
             ListaPacientes.AdicionarNaLista(pacienteTeste);
 
             ListaPacientes.ListarPacientesPorCPF();
+
+            var data = new DateTime(2023, 01, 15);
+            var data1 = new DateTime(2023, 01, 14);
+
+            var inicio = new TimeSpan(12, 0, 0);
+            var inicio1 = new TimeSpan(11, 0, 0);
+
+            var fim = new TimeSpan(15, 0, 0);
+            var consulta = new Agendamento(data, inicio, fim, pacienteTeste);
+            var consulta1 = new Agendamento(data1, inicio, fim, pacienteTeste);
+            var consulta2 = new Agendamento(data, inicio1, fim, pacienteTeste);
+
+
+            ListaAgendamento.AdicionarNaLista(consulta);
+            ListaAgendamento.AdicionarNaLista(consulta1);
+            ListaAgendamento.AdicionarNaLista(consulta2);
+
+
+            ListaAgendamento.ListarAgendaToda();
             MenuPrincipal();
         }
         private void MenuPrincipal()
