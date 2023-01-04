@@ -182,7 +182,7 @@ namespace Odonto.Controlador
             do
             {
                 AgendaForm.SolicitarCPF();
-                isValid = AgendaValidador.IsValidCPF(AgendaForm.CPF, ListaPacientes.Pacientes);
+                isValid = AgendaValidador.IsValidCPF(AgendaForm._CPF, ListaPacientes.Pacientes);
 
             } while (!isValid);
         }
@@ -192,7 +192,7 @@ namespace Odonto.Controlador
             do
             {
                 AgendaForm.SolicitarDataConsulta();
-                isValid = AgendaValidador.IsValidDataConsulta(AgendaForm.Consulta);
+                isValid = AgendaValidador.IsValidDataConsulta(AgendaForm._Consulta);
 
             } while (!isValid);
         }
@@ -202,7 +202,7 @@ namespace Odonto.Controlador
             do
             {
                 //AgendaForm.SolicitarHoraInicio();
-                isValid = AgendaValidador.IsValidHoraInicio(AgendaForm.Inicio);
+                isValid = AgendaValidador.IsValidHoraInicio(AgendaForm._Inicio);
 
             } while (!isValid);
         }
@@ -212,7 +212,7 @@ namespace Odonto.Controlador
             do
             {
                 //AgendaForm.SolicitarHoraFim();
-                isValid = AgendaValidador.IsValidHoraFim(AgendaForm.Fim);
+                isValid = AgendaValidador.IsValidHoraFim(AgendaForm._Fim);
 
             } while (!isValid);
         }
@@ -237,7 +237,7 @@ namespace Odonto.Controlador
             do
             {
                 AgendaForm.SolicitarCPF();
-                isValid = AgendaValidador.CanDeleteCPF(AgendaForm.CPF, ListaPacientes.Pacientes, ListaAgendamento.Agendamentos);
+                isValid = AgendaValidador.CanDeleteCPF(AgendaForm._CPF, ListaPacientes.Pacientes, ListaAgendamento.Agendamentos);
 
             } while (!isValid);
         }

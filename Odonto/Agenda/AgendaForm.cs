@@ -9,11 +9,11 @@ namespace Odonto
 {
     public class AgendaForm : Agenda
     {
-        public string CPF { get; private set; }
+        public string _CPF { get; private set; }
 
-        public string Consulta { get; private set; }
-        public string Inicio { get; private set; }
-        public string Fim { get; private set; }
+        public string _Consulta { get; private set; }
+        public string _Inicio { get; private set; }
+        public string _Fim { get; private set; }
 
 
         public string MenuListarAgenda()
@@ -38,7 +38,7 @@ namespace Odonto
         public void SolicitarCPF()
         {
             Console.Write("CPF: ");
-            CPF = Console.ReadLine();
+            _CPF = Console.ReadLine();
         }
 
         public void SolicitarDataConsulta()
@@ -66,7 +66,7 @@ namespace Odonto
                 {
                     TimeSpan inicio;
 
-                    inicio = new TimeSpan(Convert.ToInt32(Inicio));
+                    inicio = new TimeSpan(Convert.ToInt32(_Inicio));
 
                     do
                     {
@@ -88,8 +88,9 @@ namespace Odonto
 
                 else
                 {
-                    Consulta = _consulta;
+                    _Consulta = _consulta;
                     SolicitarHora();
+                    AdicionarMarcacao(_CPF, _Consulta, _Inicio, _Fim);
                 }
 
             }
@@ -104,7 +105,7 @@ namespace Odonto
         public void SolicitarHoraInicio()
         {
             Console.Write("Hora inicial (HHmm): ");
-            Inicio = Console.ReadLine();
+            _Inicio = Console.ReadLine();
         }
 
 
@@ -113,7 +114,7 @@ namespace Odonto
         {
 
             Console.Write("Hora final (HHmm): ");
-            Fim = Console.ReadLine();
+            _Fim = Console.ReadLine();
 
         }
 
@@ -124,13 +125,13 @@ namespace Odonto
                 SolicitarHoraInicio();
                 TimeSpan inicio;
 
-                inicio = new TimeSpan(Convert.ToInt32(Inicio));
+                inicio = new TimeSpan(Convert.ToInt32(_Inicio));
 
 
                 SolicitarHoraFim();
                 TimeSpan fim;
 
-                fim = new TimeSpan(Convert.ToInt32(Fim));
+                fim = new TimeSpan(Convert.ToInt32(_Fim));
 
                 if (fim < inicio)
                 {
@@ -138,7 +139,7 @@ namespace Odonto
                 }
                 else
                 {
-                    Fim = fim.ToString();
+                    _Fim = fim.ToString();
                 }
             }
             catch(ArgumentOutOfRangeException) {
