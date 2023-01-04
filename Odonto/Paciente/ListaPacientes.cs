@@ -1,5 +1,7 @@
 ﻿using Odonto.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Odonto
 {
@@ -36,14 +38,35 @@ namespace Odonto
         /// </summary>
         public void ListarPacientesPorCPF()
         {
-            Pacientes.ImprimeDicionarioOrdenado(OrdenadoPor.CPF);
+            PacienteExtensions.CabecalhoListaPacientes();
+            var values = Pacientes.Values;
+
+            var listaOrdenada = values.OrderBy(x => x.CPF);
+
+            foreach (var item in listaOrdenada)
+            {
+                Console.WriteLine(item);
+            }
+            PacienteExtensions.RodapeListaPacientes();
+
         }
         /// <summary>
         /// Mostra todos os Pacientes ordenados, em ordem crescente, pelo valor do Nome
         /// </summary>
         public void ListarPacientesPorNome()
         {
-            Pacientes.ImprimeDicionarioOrdenado(OrdenadoPor.Nome);
+            PacienteExtensions.CabecalhoListaPacientes();
+
+            var values = Pacientes.Values;
+
+            var listaOrdenada = values.OrderBy(x => x.Nome);
+
+            foreach (var item in listaOrdenada)
+            {
+                Console.WriteLine(item);
+            }
+            PacienteExtensions.RodapeListaPacientes();
+
         }
     }
 }
